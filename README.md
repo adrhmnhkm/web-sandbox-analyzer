@@ -42,7 +42,7 @@ Berikut adalah cara untuk menyiapkan dan menjalankan Web Sandbox Analyzer.
 
 1.  **Clone repositori:**
     ```bash
-    git clone [https://github.com/adrhmnhkm/web-sandbox-analyzer.git](https://github.com/adrhmnhkm/web-sandbox-analyzer.git)
+    git clone https://github.com/adrhmnhkm/web-sandbox-analyzer.git
     cd NAMA_REPOSITORI_ANDA
     ```
 2.  **Buat dan aktifkan virtual environment (disarankan):**
