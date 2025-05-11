@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*~
+*.egg-info/
+*.egg
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+pip-selfcheck.json
+
+# IDE/Editor specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Output files (jika Anda tidak ingin membagikan hasil analisis di repo)
+# Jika Anda INGIN membagikan contoh output, jangan tambahkan baris ini
+# atau gunakan path yang lebih spesifik jika hanya sebagian yang mau diabaikan.
+# output/
+
+# Log files
+*.log
+app_activity.log # Kecuali jika Anda ingin log ini ada di repo
+
+# Docker (jika ada file spesifik docker yang tidak perlu)
+# .dockerignore (ini file terpisah, tapi jika ada file sementara docker)
+
+# Build artifacts (jika ada)
+dist/
+build/
+*.spec
