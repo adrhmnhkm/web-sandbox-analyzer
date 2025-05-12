@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Analisis Web Sandbox - {{ target_url }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        .screenshot-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .screenshot-container img {
+            max-width: 80%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .url-cell {
+            word-break: break-all; /* Agar URL panjang tidak merusak layout tabel */
+        }
+        .summary-item {
+            margin-bottom: 10px;
+        }
+         /* Gaya untuk tabel yang bisa di-scroll jika terlalu lebar */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Laporan Analisis Web Sandbox</h1>
+        <div class="summary-item"><strong>URL Dianalisis:</strong> <a href="{{ target_url }}" target="_blank">{{ target_url }}</a></div>
+        <div class="summary-item"><strong>Waktu Analisis:</strong> {{ analysis_timestamp }}</div>
+
+        <h2>Ringkasan</h2>
+        <div class="summary-item"><strong>Total Permintaan Jaringan:</strong> {{ network_events | length }}</div>
+        <div class="summary-item"><strong>Screenshot Halaman:</strong></div>
+        {% if screenshot_path %}
+            <div class="screenshot-container">
+                <img src="{{ screenshot_filename }}" alt="Screenshot halaman {{ target_url }}">
+                <p><small>Path Screenshot: {{ screenshot_path }}</small></p>
+            </div>
+        {% else %}
+            <p>Screenshot tidak tersedia.</p>
+        {% endif %}
+
+        <h2>Detail Aktivitas Jaringan</h2>
+        {% if network_events %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Timestamp</th>
+                            <th>Metode</th>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Tipe Sumber Daya</th>
+                            <th>Domain Tujuan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in network_events %}
+                            {% if event.type == 'request' %} {# Kita hanya tampilkan request untuk ringkasan ini #}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ event.timestamp | round(2) }}</td>
+                                    <td>{{ event.method }}</td>
+                                    <td class="url-cell"><a href="{{ event.url }}" target="_blank" title="{{ event.url }}">{{ event.url[:100] }}{% if event.url|length > 100 %}...{% endif %}</a></td>
+                                    <td>
+                                        {% set response_for_request = network_events | selectattr('type', 'equalto', 'response') | selectattr('url', 'equalto', event.url) | first %}
+                                        {{ response_for_request.status if response_for_request else 'N/A' }}
+                                    </td>
+                                    <td>{{ event.resource_type }}</td>
+                                    <td>
+                                        {% set domain = event.url.split('//')[-1].split('/')[0] %}
+                                        {{ domain }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Tidak ada aktivitas jaringan yang tercatat.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

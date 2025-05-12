@@ -8,8 +8,12 @@ DEFAULT_TIMEOUT = 60000  # Timeout dalam milidetik (misalnya, untuk navigasi hal
 # Pengaturan Output
 SCREENSHOT_DIR = "output/screenshots"
 NETWORK_LOG_DIR = "output/network_logs"
+HTML_REPORT_DIR = "output/html_reports" # BARIS BARU
+
 DEFAULT_SCREENSHOT_FILENAME = "capture.png"
 DEFAULT_NETWORK_LOG_FILENAME = "network_activity.json"
+DEFAULT_HTML_REPORT_FILENAME = "analysis_report.html" # BARIS BARU
+
 
 # Pengaturan Logging
 LOG_LEVEL = "INFO"  # Pilihan: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
