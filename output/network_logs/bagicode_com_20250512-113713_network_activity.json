@@ -1,0 +1,749 @@
+[
+    {
+        "timestamp": 1747024626.449912,
+        "type": "request",
+        "url": "https://bagicode.com/",
+        "method": "GET",
+        "headers": {
+            "upgrade-insecure-requests": "1",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\""
+        },
+        "resource_type": "document"
+    },
+    {
+        "timestamp": 1747024627.75841,
+        "type": "response",
+        "url": "https://bagicode.com/",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "alt-svc": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\"",
+            "cache-control": "no-cache, private",
+            "content-encoding": "br",
+            "content-type": "text/html; charset=UTF-8",
+            "date": "Mon, 12 May 2025 04:37:07 GMT",
+            "server": "LiteSpeed",
+            "vary": "Accept-Encoding"
+        }
+    },
+    {
+        "timestamp": 1747024627.7637398,
+        "type": "request",
+        "url": "https://fonts.googleapis.com/css?family=Nunito|Montserrat|Material+Icons",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.7644181,
+        "type": "request",
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.76494,
+        "type": "request",
+        "url": "https://fonts.googleapis.com/css?family=Playfair+Display:700&display=swap",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.765532,
+        "type": "request",
+        "url": "https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.76615,
+        "type": "request",
+        "url": "https://cdn.jsdelivr.net/npm/animate.css@3.5.1",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.766481,
+        "type": "request",
+        "url": "https://bagicode.com/css/app.css",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024627.7668202,
+        "type": "request",
+        "url": "https://bagicode.com/js/app.js",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "script"
+    },
+    {
+        "timestamp": 1747024627.767102,
+        "type": "request",
+        "url": "https://cdn.jsdelivr.net/npm/sweetalert2@9",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "script"
+    },
+    {
+        "timestamp": 1747024627.8602948,
+        "type": "response",
+        "url": "https://bagicode.com/css/app.css",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cache-control": "public, max-age=604800",
+            "content-encoding": "br",
+            "expires": "Mon, 19 May 2025 04:37:07 GMT",
+            "accept-ranges": "bytes",
+            "content-length": "20882",
+            "date": "Mon, 12 May 2025 04:37:07 GMT",
+            "content-type": "text/css",
+            "last-modified": "Thu, 30 May 2024 07:22:58 GMT",
+            "vary": "Accept-Encoding",
+            "server": "LiteSpeed"
+        }
+    },
+    {
+        "timestamp": 1747024627.864,
+        "type": "request",
+        "url": "https://fonts.googleapis.com/css?family=Nunito",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "stylesheet"
+    },
+    {
+        "timestamp": 1747024628.119294,
+        "type": "response",
+        "url": "https://bagicode.com/js/app.js",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "content-encoding": "br",
+            "accept-ranges": "bytes",
+            "content-length": "499177",
+            "date": "Mon, 12 May 2025 04:37:07 GMT",
+            "content-type": "text/javascript",
+            "last-modified": "Thu, 30 May 2024 07:23:50 GMT",
+            "vary": "Accept-Encoding",
+            "server": "LiteSpeed"
+        }
+    },
+    {
+        "timestamp": 1747024628.5154612,
+        "type": "response",
+        "url": "https://fonts.googleapis.com/css?family=Nunito|Montserrat|Material+Icons",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "content-encoding": "gzip",
+            "x-content-type-options": "nosniff",
+            "expires": "Mon, 12 May 2025 04:37:08 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
+            "last-modified": "Mon, 12 May 2025 04:37:08 GMT",
+            "x-frame-options": "SAMEORIGIN",
+            "strict-transport-security": "max-age=31536000",
+            "link": "<https://fonts.gstatic.com>; rel=preconnect; crossorigin",
+            "cache-control": "private, max-age=86400, stale-while-revalidate=604800",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin-allow-popups",
+            "cross-origin-resource-policy": "cross-origin",
+            "access-control-allow-origin": "*",
+            "x-xss-protection": "0",
+            "server": "ESF"
+        }
+    },
+    {
+        "timestamp": 1747024628.51666,
+        "type": "response",
+        "url": "https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "content-encoding": "gzip",
+            "x-content-type-options": "nosniff",
+            "expires": "Mon, 12 May 2025 04:37:08 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
+            "last-modified": "Mon, 12 May 2025 04:37:08 GMT",
+            "x-frame-options": "SAMEORIGIN",
+            "strict-transport-security": "max-age=31536000",
+            "link": "<https://fonts.gstatic.com>; rel=preconnect; crossorigin",
+            "cache-control": "private, max-age=86400, stale-while-revalidate=604800",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin-allow-popups",
+            "cross-origin-resource-policy": "cross-origin",
+            "access-control-allow-origin": "*",
+            "x-xss-protection": "0",
+            "server": "ESF"
+        }
+    },
+    {
+        "timestamp": 1747024628.517379,
+        "type": "response",
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cf-cdnjs-via": "cfworker/kv",
+            "content-encoding": "br",
+            "cf-cache-status": "HIT",
+            "etag": "\"5eb03cf0-326b2\"",
+            "age": "13719",
+            "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=%2FGD7L3NuEjg04AgdyjyqZzxbmNPTDCKHlwHxHYPw7LhG5oIh7cw2bqS74NERvAkBeDFrnxGaRTyBaJcXJZQk5rwfUby6Io2j%2FCXCKS2SdPwUc81bNSN2ShTNj2%2FLztmy8LganjR9gpov7dZPnDsGo8Vt\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+            "x-content-type-options": "nosniff",
+            "expires": "Sat, 02 May 2026 04:37:08 GMT",
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "last-modified": "Mon, 04 May 2020 16:04:00 GMT",
+            "vary": "Accept-Encoding",
+            "strict-transport-security": "max-age=15780000",
+            "cache-control": "public, max-age=30672000",
+            "timing-allow-origin": "*",
+            "nel": "{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+            "cross-origin-resource-policy": "cross-origin",
+            "cf-ray": "93e73818e8092f6c-CGK",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "23225",
+            "server": "cloudflare"
+        }
+    },
+    {
+        "timestamp": 1747024628.5288892,
+        "type": "response",
+        "url": "https://fonts.googleapis.com/css?family=Nunito",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "content-encoding": "gzip",
+            "x-content-type-options": "nosniff",
+            "expires": "Mon, 12 May 2025 04:37:08 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
+            "last-modified": "Mon, 12 May 2025 04:37:08 GMT",
+            "x-frame-options": "SAMEORIGIN",
+            "strict-transport-security": "max-age=31536000",
+            "link": "<https://fonts.gstatic.com>; rel=preconnect; crossorigin",
+            "cache-control": "private, max-age=86400, stale-while-revalidate=604800",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin-allow-popups",
+            "cross-origin-resource-policy": "cross-origin",
+            "access-control-allow-origin": "*",
+            "x-xss-protection": "0",
+            "server": "ESF"
+        }
+    },
+    {
+        "timestamp": 1747024628.5293949,
+        "type": "response",
+        "url": "https://fonts.googleapis.com/css?family=Playfair+Display:700&display=swap",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "content-encoding": "gzip",
+            "x-content-type-options": "nosniff",
+            "expires": "Mon, 12 May 2025 04:37:08 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site",
+            "last-modified": "Mon, 12 May 2025 04:37:08 GMT",
+            "x-frame-options": "SAMEORIGIN",
+            "strict-transport-security": "max-age=31536000",
+            "link": "<https://fonts.gstatic.com>; rel=preconnect; crossorigin",
+            "cache-control": "private, max-age=86400, stale-while-revalidate=604800",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin-allow-popups",
+            "cross-origin-resource-policy": "cross-origin",
+            "access-control-allow-origin": "*",
+            "x-xss-protection": "0",
+            "server": "ESF"
+        }
+    },
+    {
+        "timestamp": 1747024628.5302138,
+        "type": "response",
+        "url": "https://cdn.jsdelivr.net/npm/animate.css@3.5.1",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "access-control-expose-headers": "*",
+            "content-encoding": "gzip",
+            "cf-cache-status": "HIT",
+            "etag": "W/\"ce35-sRqssYaNT0ucmhT+dmjeLiTnuW8\"",
+            "age": "4096257",
+            "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=fd52%2FyObdiGhNBkdGB0I2GVVX6Q2lTC877%2FeSSms7SGjO8%2BIqfZytIqmJnrKp%2FqJdtp%2B9XNiN3nLOnExVn7vhrbb32FiNw58yLWwDr0FQCb%2FDuDU%2FnwvUThntQrQw6BMR9LdgdMXh7Il3qXa6sI%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+            "x-content-type-options": "nosniff",
+            "x-jsd-version-type": "version",
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "x-cache": "HIT, HIT",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "text/css; charset=utf-8",
+            "x-served-by": "cache-fra-eddf8230087-FRA, cache-lga21958-LGA",
+            "vary": "Accept-Encoding",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "cache-control": "public, max-age=31536000, s-maxage=31536000, immutable",
+            "timing-allow-origin": "*",
+            "nel": "{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+            "cross-origin-resource-policy": "cross-origin",
+            "cf-ray": "93e73818e8b2ff78-CGK",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "3958",
+            "server": "cloudflare",
+            "x-jsd-version": "3.5.1"
+        }
+    },
+    {
+        "timestamp": 1747024628.551892,
+        "type": "request",
+        "url": "https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2",
+        "method": "GET",
+        "headers": {
+            "origin": "https://bagicode.com",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://fonts.googleapis.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "font"
+    },
+    {
+        "timestamp": 1747024628.552524,
+        "type": "response",
+        "url": "https://cdn.jsdelivr.net/npm/sweetalert2@9",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "access-control-expose-headers": "*",
+            "content-encoding": "br",
+            "cf-cache-status": "HIT",
+            "etag": "W/\"1080d-uB5K/9b4efMtYCfkBM9HcldmPDk\"",
+            "age": "24798",
+            "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=aWqkz9hKJendfzm9m4Sgj7oe7w1tmKz6lWNKLOZxo4Feh0X1xqO8n8vrz7Ivo5LixD%2FSeyCHU%2BUcs6DE9yKtqpMmr1Qghyfp8Y2pnfbU2iyKnl2cKP5t2nFMCu1F0O68GkLh9nBx4RrYXGHX2wk%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+            "x-content-type-options": "nosniff",
+            "x-jsd-version-type": "version",
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "x-cache": "HIT, HIT",
+            "date": "Mon, 12 May 2025 04:37:08 GMT",
+            "content-type": "application/javascript; charset=utf-8",
+            "x-served-by": "cache-fra-eddf8230094-FRA, cache-lga21920-LGA",
+            "vary": "Accept-Encoding",
+            "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+            "cache-control": "public, max-age=604800, s-maxage=43200",
+            "timing-allow-origin": "*",
+            "nel": "{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+            "cross-origin-resource-policy": "cross-origin",
+            "cf-ray": "93e73818e8b5ff78-CGK",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "18790",
+            "server": "cloudflare",
+            "x-jsd-version": "9.17.4"
+        }
+    },
+    {
+        "timestamp": 1747024628.9066072,
+        "type": "request",
+        "url": "https://bagicode.com/get_class",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "x-xsrf-token": "eyJpdiI6IlI2WWV5SjNOc2RaTVBkUlBMb3lXdnc9PSIsInZhbHVlIjoiR2E1eFVWV1R1d0V5QzdpN1lVeTZZenZyK3pyUktEWlJCQkhrVmRNdWxZaFVTd0N5MXBFUGVHcEdkNnpwOHExZE5rZ0tiNDhUcDVDVlVyXC9waGh0YnZIM0UxZ1hTS1Z0RzRSdTBLUVpvQmdXRFk5XC9ybTdUeTJDNVV4eW5RMWNBNSIsIm1hYyI6ImRiZDQ3NTExNjcxODg0OTU1NzYzYjE2YTE1ZjYxNDczZjU3ZTdjMDNhMjk5M2I0ZDkwNGY3OGRjMDMwNGUzYzYifQ==",
+            "referer": "https://bagicode.com/",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "x-requested-with": "XMLHttpRequest",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "accept": "application/json, text/plain, */*"
+        },
+        "resource_type": "xhr"
+    },
+    {
+        "timestamp": 1747024628.9075048,
+        "type": "request",
+        "url": "https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2",
+        "method": "GET",
+        "headers": {
+            "origin": "https://bagicode.com",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://fonts.googleapis.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "font"
+    },
+    {
+        "timestamp": 1747024628.907806,
+        "type": "request",
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.woff2?v=3.8.95",
+        "method": "GET",
+        "headers": {
+            "origin": "https://bagicode.com",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "font"
+    },
+    {
+        "timestamp": 1747024628.9080808,
+        "type": "request",
+        "url": "https://fonts.gstatic.com/s/materialicons/v143/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
+        "method": "GET",
+        "headers": {
+            "origin": "https://bagicode.com",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://fonts.googleapis.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "font"
+    },
+    {
+        "timestamp": 1747024628.90836,
+        "type": "request",
+        "url": "https://lh3.googleusercontent.com/-y7XGL5G9Z6M/AAAAAAAAAAI/AAAAAAAAAAA/aHdySvrxZCc/w60-h60-p-rp-mo-br100/photo.jpg",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "image"
+    },
+    {
+        "timestamp": 1747024628.908631,
+        "type": "request",
+        "url": "https://lh3.googleusercontent.com/-Q4L4CxTolWg/AAAAAAAAAAI/AAAAAAAAAAA/6JyKXJVCBDY/w60-h60-p-rp-mo-br100/photo.jpg",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "image"
+    },
+    {
+        "timestamp": 1747024628.932449,
+        "type": "request",
+        "url": "https://bagicode.com/img/left-img.svg",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "image"
+    },
+    {
+        "timestamp": 1747024629.043641,
+        "type": "response",
+        "url": "https://bagicode.com/img/left-img.svg",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cache-control": "public, max-age=604800",
+            "content-encoding": "br",
+            "expires": "Mon, 19 May 2025 04:37:09 GMT",
+            "accept-ranges": "bytes",
+            "content-length": "5009",
+            "date": "Mon, 12 May 2025 04:37:09 GMT",
+            "content-type": "image/svg+xml",
+            "last-modified": "Mon, 20 Jan 2020 04:54:30 GMT",
+            "vary": "Accept-Encoding",
+            "server": "LiteSpeed"
+        }
+    },
+    {
+        "timestamp": 1747024629.067858,
+        "type": "response",
+        "url": "https://bagicode.com/get_class",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cache-control": "no-cache, private",
+            "alt-svc": "h3=\":443\"; ma=2592000, h3-29=\":443\"; ma=2592000, h3-Q050=\":443\"; ma=2592000, h3-Q046=\":443\"; ma=2592000, h3-Q043=\":443\"; ma=2592000, quic=\":443\"; ma=2592000; v=\"43,46\"",
+            "content-encoding": "br",
+            "date": "Mon, 12 May 2025 04:37:09 GMT",
+            "content-type": "application/json",
+            "vary": "Accept-Encoding",
+            "server": "LiteSpeed"
+        }
+    },
+    {
+        "timestamp": 1747024629.0981839,
+        "type": "request",
+        "url": "https://bagicode.com/img/picture/Robby_Dianputra97502c9edc6d0040ecc2eebc89b7f06ffb9e2222.png",
+        "method": "GET",
+        "headers": {
+            "sec-ch-ua-platform": "\"Windows\"",
+            "referer": "https://bagicode.com/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Sandbox/1.0",
+            "sec-ch-ua": "\"Chromium\";v=\"136\", \"HeadlessChrome\";v=\"136\", \"Not.A/Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0"
+        },
+        "resource_type": "image"
+    },
+    {
+        "timestamp": 1747024629.2018151,
+        "type": "response",
+        "url": "https://bagicode.com/img/picture/Robby_Dianputra97502c9edc6d0040ecc2eebc89b7f06ffb9e2222.png",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cache-control": "public, max-age=604800",
+            "expires": "Mon, 19 May 2025 04:37:09 GMT",
+            "accept-ranges": "bytes",
+            "content-length": "233753",
+            "date": "Mon, 12 May 2025 04:37:09 GMT",
+            "content-type": "image/png",
+            "last-modified": "Thu, 03 Dec 2020 15:32:00 GMT",
+            "server": "LiteSpeed"
+        }
+    },
+    {
+        "timestamp": 1747024629.259424,
+        "type": "response",
+        "url": "https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "age": "421444",
+            "report-to": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+            "x-content-type-options": "nosniff",
+            "expires": "Thu, 07 May 2026 07:33:05 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Wed, 07 May 2025 07:33:05 GMT",
+            "last-modified": "Thu, 14 Sep 2023 00:41:55 GMT",
+            "content-type": "font/woff2",
+            "cache-control": "public, max-age=31536000",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin; report-to=\"apps-themes\"",
+            "cross-origin-resource-policy": "cross-origin",
+            "content-security-policy-report-only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "16292",
+            "x-xss-protection": "0",
+            "server": "sffe"
+        }
+    },
+    {
+        "timestamp": 1747024629.271811,
+        "type": "response",
+        "url": "https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "age": "360987",
+            "report-to": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+            "x-content-type-options": "nosniff",
+            "expires": "Fri, 08 May 2026 00:20:42 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Thu, 08 May 2025 00:20:42 GMT",
+            "last-modified": "Wed, 06 Nov 2024 17:30:39 GMT",
+            "content-type": "font/woff2",
+            "cache-control": "public, max-age=31536000",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin; report-to=\"apps-themes\"",
+            "cross-origin-resource-policy": "cross-origin",
+            "content-security-policy-report-only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "18792",
+            "x-xss-protection": "0",
+            "server": "sffe"
+        }
+    },
+    {
+        "timestamp": 1747024629.3204422,
+        "type": "response",
+        "url": "https://lh3.googleusercontent.com/-Q4L4CxTolWg/AAAAAAAAAAI/AAAAAAAAAAA/6JyKXJVCBDY/w60-h60-p-rp-mo-br100/photo.jpg",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "access-control-expose-headers": "Content-Length",
+            "etag": "\"vd1f\"",
+            "age": "11",
+            "x-content-type-options": "nosniff",
+            "expires": "Tue, 13 May 2025 04:36:58 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:36:58 GMT",
+            "content-disposition": "inline;filename=\"\"",
+            "content-type": "image/png",
+            "vary": "Origin",
+            "cache-control": "public, max-age=86400, no-transform",
+            "timing-allow-origin": "*",
+            "access-control-allow-origin": "*",
+            "content-length": "8841",
+            "x-xss-protection": "0",
+            "server": "fife"
+        }
+    },
+    {
+        "timestamp": 1747024629.321078,
+        "type": "response",
+        "url": "https://lh3.googleusercontent.com/-y7XGL5G9Z6M/AAAAAAAAAAI/AAAAAAAAAAA/aHdySvrxZCc/w60-h60-p-rp-mo-br100/photo.jpg",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "access-control-expose-headers": "Content-Length",
+            "etag": "\"vdd5\"",
+            "age": "11",
+            "x-content-type-options": "nosniff",
+            "expires": "Tue, 13 May 2025 04:36:58 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Mon, 12 May 2025 04:36:58 GMT",
+            "content-disposition": "inline;filename=\"\"",
+            "content-type": "image/png",
+            "vary": "Origin",
+            "cache-control": "public, max-age=86400, no-transform",
+            "timing-allow-origin": "*",
+            "access-control-allow-origin": "*",
+            "content-length": "6001",
+            "x-xss-protection": "0",
+            "server": "fife"
+        }
+    },
+    {
+        "timestamp": 1747024629.342313,
+        "type": "response",
+        "url": "https://fonts.gstatic.com/s/materialicons/v143/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "age": "375596",
+            "report-to": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+            "x-content-type-options": "nosniff",
+            "expires": "Thu, 07 May 2026 20:17:13 GMT",
+            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+            "date": "Wed, 07 May 2025 20:17:13 GMT",
+            "last-modified": "Wed, 08 Jan 2025 18:24:19 GMT",
+            "content-type": "font/woff2",
+            "cache-control": "public, max-age=31536000",
+            "timing-allow-origin": "*",
+            "cross-origin-opener-policy": "same-origin; report-to=\"apps-themes\"",
+            "cross-origin-resource-policy": "cross-origin",
+            "content-security-policy-report-only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "128352",
+            "x-xss-protection": "0",
+            "server": "sffe"
+        }
+    },
+    {
+        "timestamp": 1747024629.719695,
+        "type": "response",
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.woff2?v=3.8.95",
+        "status": 200,
+        "status_text": "",
+        "headers": {
+            "cf-cdnjs-via": "cfworker/kv",
+            "cf-cache-status": "HIT",
+            "etag": "\"5eb03cf0-31e24\"",
+            "age": "4505944",
+            "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=m6ZpJWVmwl%2FVVliLb66mjqizmJxIsNApLuJbJ55wCUnh0nxqif7uiVyjM5N33nCZZEvCeA8BH6gbaWLDE6z9E63nPNc6lIS9vw140Xj7o1u7k8H7FwigkSYfkV1MysptFsZO0wZqhKvnURGQGhkqCIwg\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+            "x-content-type-options": "nosniff",
+            "expires": "Sat, 02 May 2026 04:37:09 GMT",
+            "alt-svc": "h3=\":443\"; ma=86400",
+            "date": "Mon, 12 May 2025 04:37:09 GMT",
+            "content-type": "application/octet-stream; charset=utf-8",
+            "last-modified": "Mon, 04 May 2020 16:04:00 GMT",
+            "vary": "Accept-Encoding",
+            "strict-transport-security": "max-age=15780000",
+            "cache-control": "public, max-age=30672000",
+            "timing-allow-origin": "*",
+            "nel": "{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+            "cross-origin-resource-policy": "cross-origin",
+            "cf-ray": "93e7381fa9eeea76-CGK",
+            "accept-ranges": "bytes",
+            "access-control-allow-origin": "*",
+            "content-length": "204324",
+            "server": "cloudflare"
+        }
+    }
+]

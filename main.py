@@ -9,7 +9,8 @@ import sys # Untuk sys.exit
 import config
 from utils.logger_config import setup_logger
 from core.browser_operations import BrowserAutomation
-from core.report_generator import HTMLReportGenerator # Tambahkan impor ini
+from core.report_generator import HTMLReportGenerator
+from core.ioc_extractor import IOCExtractor 
 
 # Setup logger utama untuk aplikasi
 logger = setup_logger('websandbox_main', config.LOG_LEVEL, config.LOG_FILE)
@@ -74,10 +75,10 @@ def main():
     logger.info("Memulai Web Sandbox Analyzer")
     logger.info("="*50)
 
-    project_root_path = os.path.dirname(os.path.abspath(__file__)) # Dapatkan root path proyek
+    project_root_path = os.path.dirname(os.path.abspath(__file__)) 
 
     parser = argparse.ArgumentParser(description="Analisis perilaku halaman web di sandbox.")
-    parser.add_argument("url", nargs='?', default=None, # Dibuat None agar bisa dideteksi jika tidak diisi
+    parser.add_argument("url", nargs='?', default=None,
                         help="URL yang akan dianalisis.")
     parser.add_argument("-i", "--interactive", action="store_true",
                         help="Jalankan dalam mode interaktif untuk memasukkan parameter.")
@@ -100,47 +101,43 @@ def main():
         logger.info("Menjalankan mode interaktif secara default...")
         run_interactively = True
 
-
     if run_interactively:
         logger.info("--- Mode Interaktif ---")
-        if not target_url_to_analyze: # Hanya tanya jika belum di-supply dari argumen
+        if not target_url_to_analyze: 
             target_url_to_analyze = get_user_input("Masukkan URL Target", default_value="https://example.com")
             if not target_url_to_analyze or not target_url_to_analyze.startswith(('http://', 'https://')):
                 logger.error("URL tidak valid atau kosong. Keluar.")
                 sys.exit(1)
         
-        if browser_type_to_use is None: # Hanya tanya jika belum di-supply dari argumen
+        if browser_type_to_use is None: 
             browser_type_to_use = get_user_input(
                 "Pilih tipe browser [chromium, firefox, webkit]",
                 default_value=config.BROWSER_TYPE,
                 allowed_values=['chromium', 'firefox', 'webkit']
             ).lower()
 
-        if headless_mode_input is None: # Hanya tanya jika belum di-supply dari argumen
+        if headless_mode_input is None: 
             headless_choice = get_user_input(
                 "Jalankan dalam mode headless? [y/n]",
                 default_value='y' if config.HEADLESS_MODE else 'n',
                 allowed_values=['y', 'n', 'yes', 'no']
             ).lower()
             headless_mode_to_use = headless_choice in ['y', 'yes']
-        else: # Jika sudah di-supply dari argumen
+        else: 
             headless_mode_to_use = headless_mode_input == 'true'
-
         logger.info("----------------------")
-    else: # Mode non-interaktif (menggunakan argumen CLI atau default config)
+    else: 
         if not target_url_to_analyze:
             logger.error("URL target harus disediakan jika tidak dalam mode interaktif. Gunakan -i untuk mode interaktif.")
             parser.print_help()
             sys.exit(1)
         
-        # Jika parameter browser atau headless tidak di-supply via CLI, gunakan dari config
         if browser_type_to_use is None:
             browser_type_to_use = config.BROWSER_TYPE
         if headless_mode_input is None:
             headless_mode_to_use = config.HEADLESS_MODE
         else:
             headless_mode_to_use = headless_mode_input == 'true'
-
 
     logger.info(f"URL target untuk analisis: {target_url_to_analyze}")
     logger.info(f"Tipe browser yang akan digunakan: {browser_type_to_use}")
@@ -152,18 +149,33 @@ def main():
         headless_mode=headless_mode_to_use
     )
 
-    analysis_timestamp_start = time.strftime("%Y-%m-%d %H:%M:%S") # Waktu mulai analisis
-    screenshot_path, network_events = automation.analyze_page()
+    analysis_timestamp_start = time.strftime("%Y-%m-%d %H:%M:%S")
+    # --- PERUBAHAN DI SINI: Menerima 5 nilai ---
+    screenshot_path, network_events, local_storage, session_storage, cookies = automation.analyze_page()
     
-    report_generator = HTMLReportGenerator() # Inisialisasi generator laporan
+    extracted_iocs = {} 
+    if network_events:
+        logger.info("Memulai ekstraksi IOC dari data jaringan...")
+        ioc_extractor = IOCExtractor(network_events)
+        extracted_iocs = ioc_extractor.extract()
+        logger.info(f"Ekstraksi IOC selesai. {len(extracted_iocs.get('unique_domains', []))} domain unik ditemukan.")
+    else:
+        logger.info("Tidak ada event jaringan, ekstraksi IOC dilewati.")
+
+    report_generator = HTMLReportGenerator() 
+    
+    # --- PERUBAHAN DI SINI: Menambahkan data cookies ke laporan ---
     analysis_data_for_report = {
         'target_url': target_url_to_analyze,
         'analysis_timestamp': analysis_timestamp_start,
         'screenshot_path': screenshot_path,
-        'network_events': network_events
+        'network_events': network_events,
+        'local_storage': local_storage,        
+        'session_storage': session_storage,
+        'extracted_iocs': extracted_iocs,
+        'cookies': cookies # BARU
     }
     html_report_path = report_generator.generate_report(analysis_data_for_report)
-
 
     if screenshot_path:
         logger.info(f"Analisis selesai. Screenshot disimpan di: {screenshot_path}")
@@ -179,15 +191,20 @@ def main():
             logger.warning("Gagal menyimpan detail event jaringan.")
     else:
         logger.info("Tidak ada event jaringan yang terdeteksi atau analisis gagal.")
+    
+    if local_storage:
+        logger.info(f"Data localStorage terdeteksi: {len(local_storage)} item.")
+    if session_storage:
+        logger.info(f"Data sessionStorage terdeteksi: {len(session_storage)} item.")
+    # BARU: Logging untuk data cookies
+    if cookies and not (len(cookies) == 1 and 'error' in cookies[0]): # Cek jika cookies bukan hanya berisi error
+        logger.info(f"Data cookies terdeteksi: {len(cookies)} cookie.")
+    elif cookies and 'error' in cookies[0]:
+        logger.warning(f"Gagal mengambil cookies: {cookies[0]['error']}")
+
 
     if html_report_path:
         logger.info(f"Laporan HTML disimpan di: {html_report_path}")
-        # Opsi untuk mencoba membuka laporan secara otomatis (tergantung OS)
-        # try:
-        #     import webbrowser
-        #     webbrowser.open(f"file://{os.path.abspath(html_report_path)}")
-        # except Exception as e:
-        #     logger.debug(f"Tidak dapat membuka laporan HTML secara otomatis: {e}")
     else:
         logger.warning("Gagal membuat laporan HTML.")
 

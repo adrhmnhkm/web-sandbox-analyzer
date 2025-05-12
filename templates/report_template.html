@@ -17,7 +17,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1, h2 {
+        h1, h2, h3 { 
             color: #333;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
@@ -29,9 +29,9 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px; /* Sedikit dikurangi paddingnya untuk tabel cookie */
             text-align: left;
-            font-size: 0.9em;
+            font-size: 0.85em; /* Sedikit dikurangi fontnya untuk tabel cookie */
         }
         th {
             background-color: #f0f0f0;
@@ -46,17 +46,42 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .url-cell {
-            word-break: break-all; /* Agar URL panjang tidak merusak layout tabel */
+        .url-cell, .value-cell, .ioc-url-cell, .cookie-value-cell { /* Menambahkan .cookie-value-cell */
+            word-break: break-all; 
         }
         .summary-item {
             margin-bottom: 10px;
         }
-         /* Gaya untuk tabel yang bisa di-scroll jika terlalu lebar */
         .table-responsive {
             overflow-x: auto;
             margin-top: 20px;
         }
+        .storage-section, .ioc-section, .cookie-section { /* Menambahkan .cookie-section */
+            margin-top: 30px;
+        }
+        .storage-table td:first-child { 
+            font-weight: bold;
+            width: 30%; 
+        }
+        .ioc-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .ioc-list li {
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap; /* Memastikan teks panjang di-wrap */
+            word-wrap: break-word; /* Memastikan kata panjang di-wrap */
+        }
+        .boolean-true { color: green; font-weight: bold;}
+        .boolean-false { color: red; }
     </style>
 </head>
 <body>
@@ -67,17 +92,216 @@
 
         <h2>Ringkasan</h2>
         <div class="summary-item"><strong>Total Permintaan Jaringan:</strong> {{ network_events | length }}</div>
+        <div class="summary-item"><strong>Total Item LocalStorage:</strong> {{ local_storage | length if local_storage and 'error' not in local_storage else 0 }}</div>
+        <div class="summary-item"><strong>Total Item SessionStorage:</strong> {{ session_storage | length if session_storage and 'error' not in session_storage else 0 }}</div>
+        <div class="summary-item"><strong>Total Cookie Terdeteksi:</strong> {{ cookies | length if cookies and not (cookies | length == 1 and 'error' in cookies[0]) else 0 }}</div>
+        {% if extracted_iocs %}
+            <div class="summary-item"><strong>Total Domain Unik Terdeteksi:</strong> {{ extracted_iocs.unique_domains | length }}</div>
+            <div class="summary-item"><strong>Total URL Berpotensi Berbahaya:</strong> {{ extracted_iocs.potentially_harmful_urls | length }}</div>
+            <div class="summary-item"><strong>Total Permintaan POST:</strong> {{ extracted_iocs.post_requests | length }}</div>
+            <div class="summary-item"><strong>Total Permintaan ke IP Langsung:</strong> {{ extracted_iocs.direct_ip_requests | length }}</div>
+        {% endif %}
+
         <div class="summary-item"><strong>Screenshot Halaman:</strong></div>
-        {% if screenshot_path %}
+        {% if screenshot_filename %} 
             <div class="screenshot-container">
                 <img src="{{ screenshot_filename }}" alt="Screenshot halaman {{ target_url }}">
-                <p><small>Path Screenshot: {{ screenshot_path }}</small></p>
+                <p><small>Path Screenshot Asli: {{ screenshot_path }}</small></p>
             </div>
         {% else %}
             <p>Screenshot tidak tersedia.</p>
         {% endif %}
 
-        <h2>Detail Aktivitas Jaringan</h2>
+        {% if extracted_iocs and (extracted_iocs.unique_domains or extracted_iocs.potentially_harmful_urls or extracted_iocs.post_requests or extracted_iocs.direct_ip_requests) %}
+        <div class="ioc-section">
+            <h2>Indikator Kompromi (IOC) Terdeteksi</h2>
+
+            {% if extracted_iocs.unique_domains %}
+            <h3>Domain Unik yang Dihubungi ({{ extracted_iocs.unique_domains | length }})</h3>
+            <ul class="ioc-list">
+                {% for domain in extracted_iocs.unique_domains %}
+                <li>{{ domain }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if extracted_iocs.potentially_harmful_urls %}
+            <h3>URL Berpotensi Berbahaya ({{ extracted_iocs.potentially_harmful_urls | length }})</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Ekstensi</th>
+                            <th>Metode</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in extracted_iocs.potentially_harmful_urls %}
+                        <tr>
+                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                            <td>{{ item.extension }}</td>
+                            <td>{{ item.method }}</td>
+                            <td>{{ item.timestamp | round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if extracted_iocs.post_requests %}
+            <h3>Permintaan POST ({{ extracted_iocs.post_requests | length }})</h3>
+             <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Timestamp</th>
+                            <th>Ringkasan Data POST</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in extracted_iocs.post_requests %}
+                        <tr>
+                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                            <td>{{ item.timestamp | round(2) }}</td>
+                            <td>{{ item.post_data_summary }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if extracted_iocs.direct_ip_requests %}
+            <h3>Permintaan ke Alamat IP Langsung ({{ extracted_iocs.direct_ip_requests | length }})</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>URL (Alamat IP)</th>
+                            <th>Metode</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in extracted_iocs.direct_ip_requests %}
+                        <tr>
+                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
+                            <td>{{ item.method }}</td>
+                            <td>{{ item.timestamp | round(2) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        {% elif extracted_iocs %}
+         <div class="ioc-section">
+            <h2>Indikator Kompromi (IOC) Terdeteksi</h2>
+            <p>Tidak ada IOC spesifik yang terdeteksi berdasarkan kriteria saat ini.</p>
+        </div>
+        {% endif %}
+        <div class="cookie-section">
+            <h2>Cookies Terdeteksi ({{ cookies | length if cookies and not (cookies | length == 1 and 'error' in cookies[0]) else 0 }})</h2>
+            {% if cookies and not (cookies | length == 1 and 'error' in cookies[0]) and cookies | length > 0 %}
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Nilai</th>
+                                <th>Domain</th>
+                                <th>Path</th>
+                                <th>Expires</th>
+                                <th>HttpOnly</th>
+                                <th>Secure</th>
+                                <th>SameSite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cookie in cookies %}
+                                <tr>
+                                    <td>{{ cookie.name }}</td>
+                                    <td class="cookie-value-cell"><div class="code-block">{{ cookie.value }}</div></td>
+                                    <td>{{ cookie.domain }}</td>
+                                    <td>{{ cookie.path }}</td>
+                                    <td>{{ cookie.expires | unixtimestampformat }}</td>
+                                    <td><span class="boolean-{{ 'true' if cookie.httpOnly else 'false' }}">{{ cookie.httpOnly }}</span></td>
+                                    <td><span class="boolean-{{ 'true' if cookie.secure else 'false' }}">{{ cookie.secure }}</span></td>
+                                    <td>{{ cookie.sameSite }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% elif cookies and cookies | length == 1 and 'error' in cookies[0] %}
+                <p>Gagal mengambil data cookies: {{ cookies[0].error }}</p>
+            {% else %}
+                <p>Tidak ada cookies yang ditemukan atau terdeteksi.</p>
+            {% endif %}
+        </div>
+
+        <div class="storage-section">
+            <h2>Data LocalStorage</h2>
+            {% if local_storage and 'error' not in local_storage and local_storage | length > 0 %}
+                <div class="table-responsive">
+                    <table class="storage-table">
+                        <thead>
+                            <tr>
+                                <th>Kunci (Key)</th>
+                                <th>Nilai (Value)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in local_storage.items() %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td class="value-cell"><div class="code-block">{{ value }}</div></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% elif local_storage and 'error' in local_storage %}
+                <p>Gagal mengambil data localStorage: {{ local_storage.error }}</p>
+            {% else %}
+                <p>Tidak ada data yang ditemukan di localStorage.</p>
+            {% endif %}
+        </div>
+
+        <div class="storage-section">
+            <h2>Data SessionStorage</h2>
+            {% if session_storage and 'error' not in session_storage and session_storage | length > 0 %}
+                <div class="table-responsive">
+                    <table class="storage-table">
+                        <thead>
+                            <tr>
+                                <th>Kunci (Key)</th>
+                                <th>Nilai (Value)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in session_storage.items() %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td class="value-cell"><div class="code-block">{{ value }}</div></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% elif session_storage and 'error' in session_storage %}
+                 <p>Gagal mengambil data sessionStorage: {{ session_storage.error }}</p>
+            {% else %}
+                <p>Tidak ada data yang ditemukan di sessionStorage.</p>
+            {% endif %}
+        </div>
+
+        <h2>Detail Aktivitas Jaringan ({{ network_events | selectattr('type', 'equalto', 'request') | list | length }} Permintaan)</h2>
         {% if network_events %}
             <div class="table-responsive">
                 <table>
@@ -94,7 +318,7 @@
                     </thead>
                     <tbody>
                         {% for event in network_events %}
-                            {% if event.type == 'request' %} {# Kita hanya tampilkan request untuk ringkasan ini #}
+                            {% if event.type == 'request' %} 
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>{{ event.timestamp | round(2) }}</td>

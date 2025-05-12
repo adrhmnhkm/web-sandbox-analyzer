@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Analisis Web Sandbox - https://bagicode.com/</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { 
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        .screenshot-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .screenshot-container img {
+            max-width: 80%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .url-cell, .value-cell, .ioc-url-cell {
+            word-break: break-all; 
+        }
+        .summary-item {
+            margin-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        .storage-section, .ioc-section {
+            margin-top: 30px;
+        }
+        .storage-table td:first-child { 
+            font-weight: bold;
+            width: 30%; 
+        }
+        .ioc-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .ioc-list li {
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap; /* Memastikan teks panjang di-wrap */
+            word-wrap: break-word; /* Memastikan kata panjang di-wrap */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Laporan Analisis Web Sandbox</h1>
+        <div class="summary-item"><strong>URL Dianalisis:</strong> <a href="https://bagicode.com/" target="_blank">https://bagicode.com/</a></div>
+        <div class="summary-item"><strong>Waktu Analisis:</strong> 2025-05-12 11:37:05</div>
+
+        <h2>Ringkasan</h2>
+        <div class="summary-item"><strong>Total Permintaan Jaringan:</strong> 38</div>
+        <div class="summary-item"><strong>Total Item LocalStorage:</strong> 0</div>
+        <div class="summary-item"><strong>Total Item SessionStorage:</strong> 0</div>
+        
+            <div class="summary-item"><strong>Total Domain Unik Terdeteksi:</strong> 6</div>
+            <div class="summary-item"><strong>Total URL Berpotensi Berbahaya:</strong> 0</div>
+            <div class="summary-item"><strong>Total Permintaan POST:</strong> 0</div>
+            <div class="summary-item"><strong>Total Permintaan ke IP Langsung:</strong> 0</div>
+        
+
+        <div class="summary-item"><strong>Screenshot Halaman:</strong></div>
+         
+            <div class="screenshot-container">
+                <img src="bagicode_com_20250512-113713_bagicode_com_20250512-113712_capture.png" alt="Screenshot halaman https://bagicode.com/">
+                <p><small>Path Screenshot Asli: /Users/adrhmnhkm/Project/web_sandbox/output/screenshots/bagicode_com_20250512-113712_capture.png</small></p>
+            </div>
+        
+
+        
+        <div class="ioc-section">
+            <h2>Indikator Kompromi (IOC) Terdeteksi</h2>
+
+            
+            <h3>Domain Unik yang Dihubungi (6)</h3>
+            <ul class="ioc-list">
+                
+                <li>bagicode.com</li>
+                
+                <li>cdn.jsdelivr.net</li>
+                
+                <li>cdnjs.cloudflare.com</li>
+                
+                <li>fonts.googleapis.com</li>
+                
+                <li>fonts.gstatic.com</li>
+                
+                <li>lh3.googleusercontent.com</li>
+                
+            </ul>
+            
+
+            
+
+            
+
+            
+        </div>
+        
+        <div class="storage-section">
+            <h2>Data LocalStorage</h2>
+            
+                <p>Tidak ada data yang ditemukan di localStorage.</p>
+            
+        </div>
+
+        <div class="storage-section">
+            <h2>Data SessionStorage</h2>
+            
+                <p>Tidak ada data yang ditemukan di sessionStorage.</p>
+            
+        </div>
+
+        <h2>Detail Aktivitas Jaringan (19 Permintaan)</h2>
+        
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Timestamp</th>
+                            <th>Metode</th>
+                            <th>URL</th>
+                            <th>Status</th>
+                            <th>Tipe Sumber Daya</th>
+                            <th>Domain Tujuan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                             
+                                <tr>
+                                    <td>1</td>
+                                    <td>1747024626.45</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/" target="_blank" title="https://bagicode.com/">https://bagicode.com/</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>document</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                             
+                                <tr>
+                                    <td>3</td>
+                                    <td>1747024627.76</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.googleapis.com/css?family=Nunito|Montserrat|Material+Icons" target="_blank" title="https://fonts.googleapis.com/css?family=Nunito|Montserrat|Material+Icons">https://fonts.googleapis.com/css?family=Nunito|Montserrat|Material+Icons</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        fonts.googleapis.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>4</td>
+                                    <td>1747024627.76</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css" target="_blank" title="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css">https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        cdnjs.cloudflare.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>5</td>
+                                    <td>1747024627.76</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.googleapis.com/css?family=Playfair+Display:700&amp;display=swap" target="_blank" title="https://fonts.googleapis.com/css?family=Playfair+Display:700&amp;display=swap">https://fonts.googleapis.com/css?family=Playfair+Display:700&amp;display=swap</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        fonts.googleapis.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>6</td>
+                                    <td>1747024627.77</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap" target="_blank" title="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap">https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;display=swap</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        fonts.googleapis.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>7</td>
+                                    <td>1747024627.77</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" target="_blank" title="https://cdn.jsdelivr.net/npm/animate.css@3.5.1">https://cdn.jsdelivr.net/npm/animate.css@3.5.1</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        cdn.jsdelivr.net
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>8</td>
+                                    <td>1747024627.77</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/css/app.css" target="_blank" title="https://bagicode.com/css/app.css">https://bagicode.com/css/app.css</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>9</td>
+                                    <td>1747024627.77</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/js/app.js" target="_blank" title="https://bagicode.com/js/app.js">https://bagicode.com/js/app.js</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>script</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>10</td>
+                                    <td>1747024627.77</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://cdn.jsdelivr.net/npm/sweetalert2@9" target="_blank" title="https://cdn.jsdelivr.net/npm/sweetalert2@9">https://cdn.jsdelivr.net/npm/sweetalert2@9</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>script</td>
+                                    <td>
+                                        
+                                        cdn.jsdelivr.net
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                             
+                                <tr>
+                                    <td>12</td>
+                                    <td>1747024627.86</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.googleapis.com/css?family=Nunito" target="_blank" title="https://fonts.googleapis.com/css?family=Nunito">https://fonts.googleapis.com/css?family=Nunito</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>stylesheet</td>
+                                    <td>
+                                        
+                                        fonts.googleapis.com
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                             
+                                <tr>
+                                    <td>20</td>
+                                    <td>1747024628.55</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2" target="_blank" title="https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2">https://fonts.gstatic.com/s/nunito/v26/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshdTQ3jw.woff2</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>font</td>
+                                    <td>
+                                        
+                                        fonts.gstatic.com
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                             
+                                <tr>
+                                    <td>22</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/get_class" target="_blank" title="https://bagicode.com/get_class">https://bagicode.com/get_class</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>xhr</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>23</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2" target="_blank" title="https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2">https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>font</td>
+                                    <td>
+                                        
+                                        fonts.gstatic.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>24</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.woff2?v=3.8.95" target="_blank" title="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfont.woff2?v=3.8.95">https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/fonts/materialdesignicons-webfo...</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>font</td>
+                                    <td>
+                                        
+                                        cdnjs.cloudflare.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>25</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://fonts.gstatic.com/s/materialicons/v143/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" target="_blank" title="https://fonts.gstatic.com/s/materialicons/v143/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2">https://fonts.gstatic.com/s/materialicons/v143/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>font</td>
+                                    <td>
+                                        
+                                        fonts.gstatic.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>26</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://lh3.googleusercontent.com/-y7XGL5G9Z6M/AAAAAAAAAAI/AAAAAAAAAAA/aHdySvrxZCc/w60-h60-p-rp-mo-br100/photo.jpg" target="_blank" title="https://lh3.googleusercontent.com/-y7XGL5G9Z6M/AAAAAAAAAAI/AAAAAAAAAAA/aHdySvrxZCc/w60-h60-p-rp-mo-br100/photo.jpg">https://lh3.googleusercontent.com/-y7XGL5G9Z6M/AAAAAAAAAAI/AAAAAAAAAAA/aHdySvrxZCc/w60-h60-p-rp-mo-b...</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>image</td>
+                                    <td>
+                                        
+                                        lh3.googleusercontent.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>27</td>
+                                    <td>1747024628.91</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://lh3.googleusercontent.com/-Q4L4CxTolWg/AAAAAAAAAAI/AAAAAAAAAAA/6JyKXJVCBDY/w60-h60-p-rp-mo-br100/photo.jpg" target="_blank" title="https://lh3.googleusercontent.com/-Q4L4CxTolWg/AAAAAAAAAAI/AAAAAAAAAAA/6JyKXJVCBDY/w60-h60-p-rp-mo-br100/photo.jpg">https://lh3.googleusercontent.com/-Q4L4CxTolWg/AAAAAAAAAAI/AAAAAAAAAAA/6JyKXJVCBDY/w60-h60-p-rp-mo-b...</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>image</td>
+                                    <td>
+                                        
+                                        lh3.googleusercontent.com
+                                    </td>
+                                </tr>
+                            
+                        
+                             
+                                <tr>
+                                    <td>28</td>
+                                    <td>1747024628.93</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/img/left-img.svg" target="_blank" title="https://bagicode.com/img/left-img.svg">https://bagicode.com/img/left-img.svg</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>image</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                             
+                                <tr>
+                                    <td>31</td>
+                                    <td>1747024629.1</td>
+                                    <td>GET</td>
+                                    <td class="url-cell"><a href="https://bagicode.com/img/picture/Robby_Dianputra97502c9edc6d0040ecc2eebc89b7f06ffb9e2222.png" target="_blank" title="https://bagicode.com/img/picture/Robby_Dianputra97502c9edc6d0040ecc2eebc89b7f06ffb9e2222.png">https://bagicode.com/img/picture/Robby_Dianputra97502c9edc6d0040ecc2eebc89b7f06ffb9e2222.png</a></td>
+                                    <td>
+                                        
+                                        200
+                                    </td>
+                                    <td>image</td>
+                                    <td>
+                                        
+                                        bagicode.com
+                                    </td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+        
+    </div>
+</body>
+</html>
