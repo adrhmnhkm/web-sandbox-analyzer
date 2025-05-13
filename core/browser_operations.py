@@ -1,7 +1,7 @@
 # core/browser_operations.py
 import os
 import time
-import json # Untuk mem-parse JSON dari JavaScript
+import json 
 from playwright.sync_api import sync_playwright, Error as PlaywrightError
 
 # Impor konfigurasi dan logger
@@ -30,7 +30,8 @@ class BrowserAutomation:
         self.network_data = []
         self.local_storage_data = {} 
         self.session_storage_data = {}
-        self.cookies_data = [] # BARU: Untuk menyimpan data cookies
+        self.cookies_data = []
+        self.dynamic_js_executions = [] 
 
         logger.info(f"BrowserAutomation diinisialisasi untuk URL: {self.target_url}")
         logger.info(f"Menggunakan tipe browser: {self.browser_type}, Mode headless: {self.headless_mode}")
@@ -53,6 +54,7 @@ class BrowserAutomation:
                 request_info["post_data_format"] = "hex_buffer"
         self.network_data.append(request_info)
         logger.debug(f"Request: {request.method} {request.url}")
+
 
     def _handle_response(self, response):
         timestamp = time.time()
@@ -106,34 +108,41 @@ class BrowserAutomation:
         return self.local_storage_data, self.session_storage_data
 
     def _get_cookies_data(self):
-        """
-        BARU: Metode untuk mengambil semua cookies dari konteks browser saat ini.
-        """
         if not self.context:
             logger.warning("Konteks browser tidak tersedia untuk mengambil cookies.")
             return []
         try:
             logger.info("Mengambil data cookies...")
-            # Mengambil semua cookies untuk URL saat ini dan URL lain yang mungkin diakses dalam konteks
-            # Untuk mendapatkan semua cookies dalam konteks, kita tidak perlu filter URL
             all_cookies = self.context.cookies() 
             self.cookies_data = all_cookies if all_cookies else []
             logger.info(f"Data cookies diambil: {len(self.cookies_data)} cookie.")
             logger.debug(f"Isi cookies: {self.cookies_data}")
         except Exception as e:
             logger.error(f"Gagal mengambil data cookies: {e}", exc_info=True)
-            self.cookies_data = [{"error": str(e)}] # Simpan error sebagai item cookie
+            self.cookies_data = [{"error": str(e)}] 
         return self.cookies_data
+
+    def _log_dynamic_js_call(self, function_name, args_string):
+        """Mencatat pemanggilan fungsi JS dinamis."""
+        timestamp = time.time()
+        log_entry = {
+            "timestamp": timestamp,
+            "function_name": function_name,
+            "arguments": args_string, 
+            "source_url": self.page.url if self.page else "N/A" 
+        }
+        self.dynamic_js_executions.append(log_entry)
+        logger.info(f"Eksekusi JS Dinamis Terdeteksi: {function_name} dengan argumen (awal): {args_string[:100]}{'...' if len(args_string)>100 else ''}")
 
     def analyze_page(self):
         logger.info(f"Memulai analisis untuk URL: {self.target_url}")
         screenshot_path = None
         collected_network_data = []
-        # Reset data untuk analisis baru
         self.network_data = [] 
         self.local_storage_data = {}
         self.session_storage_data = {}
-        self.cookies_data = [] # BARU: Reset cookies data
+        self.cookies_data = []
+        self.dynamic_js_executions = [] 
 
         try:
             self.playwright_context_manager = sync_playwright().start()
@@ -160,6 +169,84 @@ class BrowserAutomation:
             self.page = self.context.new_page()
             logger.debug("Halaman baru dibuat.")
 
+            self.page.expose_function("logPythonDynamicJSCall", self._log_dynamic_js_call)
+
+            # --- PERUBAHAN DI SINI: Memperluas skrip inisialisasi ---
+            init_script_dynamic_detection = """
+                (() => {
+                    // Helper untuk mengirim log ke Python
+                    const sendLog = (funcName, argsArray) => {
+                        try {
+                            // Mengubah semua argumen menjadi string untuk logging sederhana
+                            // Untuk setTimeout/setInterval, kita hanya tertarik jika argumen pertama adalah string (kode)
+                            let loggableArgs = "";
+                            if (funcName === 'setTimeout' || funcName === 'setInterval') {
+                                if (typeof argsArray[0] === 'string') {
+                                    loggableArgs = argsArray[0]; // Hanya log kode string
+                                } else {
+                                    return; // Jangan log jika bukan string kode
+                                }
+                            } else {
+                                // Untuk eval dan Function, argumen biasanya adalah kode
+                                loggableArgs = Array.from(argsArray).map(arg => String(arg)).join(', ');
+                            }
+                             window.logPythonDynamicJSCall(funcName, loggableArgs);
+                        } catch (e) {
+                            // Jika terjadi error saat logging, jangan sampai merusak halaman
+                            console.warn('Error logging dynamic JS call:', e);
+                        }
+                    };
+
+                    // Override eval
+                    const originalEval = window.eval;
+                    window.eval = function(...args) {
+                        sendLog('eval', args);
+                        return originalEval.apply(this, args);
+                    };
+
+                    // Override Function constructor
+                    const originalFunction = window.Function;
+                    window.Function = function(...args) {
+                        sendLog('Function', args);
+                        // Membuat instance Function baru menggunakan originalFunction
+                        // 'new originalFunction(...args)' atau 'originalFunction.apply(this, args)'
+                        // atau 'new (Function.prototype.bind.apply(originalFunction, [null, ...args]))'
+                        // Cara paling aman untuk memanggil konstruktor asli adalah:
+                        if (this instanceof window.Function && !this.prototype) { // Dipanggil sebagai konstruktor: new Function(...)
+                             return new originalFunction(...args);
+                        } else { // Dipanggil sebagai fungsi: Function(...)
+                             return originalFunction(...args);
+                        }
+                    };
+                    // Pastikan prototype tetap sama untuk instanceof checks
+                    window.Function.prototype = originalFunction.prototype;
+
+
+                    // Override setTimeout
+                    const originalSetTimeout = window.setTimeout;
+                    window.setTimeout = function(...args) {
+                        if (typeof args[0] === 'string') {
+                            sendLog('setTimeout', args);
+                        }
+                        return originalSetTimeout.apply(this, args);
+                    };
+
+                    // Override setInterval
+                    const originalSetInterval = window.setInterval;
+                    window.setInterval = function(...args) {
+                        if (typeof args[0] === 'string') {
+                            sendLog('setInterval', args);
+                        }
+                        return originalSetInterval.apply(this, args);
+                    };
+                    
+                    console.log('Dynamic JS detection overrides installed.');
+                })();
+            """
+            self.page.add_init_script(init_script_dynamic_detection)
+            logger.info("Skrip inisialisasi untuk deteksi JS dinamis (eval, Function, setTimeout, setInterval) ditambahkan.")
+            # --- AKHIR PERUBAHAN ---
+
             self.page.on("request", self._handle_request)
             self.page.on("response", self._handle_response)
             logger.info("Event listener jaringan didaftarkan.")
@@ -169,7 +256,7 @@ class BrowserAutomation:
             logger.info(f"Navigasi ke {self.target_url} berhasil (event 'load' terpicu).")
 
             self._get_storage_data() 
-            self._get_cookies_data() # BARU: Panggil metode untuk mengambil cookies
+            self._get_cookies_data() 
 
             wait_after_load_ms = 3000 
             logger.info(f"Menunggu tambahan {wait_after_load_ms / 1000} detik untuk aktivitas pasca-pemuatan...")
@@ -190,6 +277,7 @@ class BrowserAutomation:
 
             collected_network_data = list(self.network_data) 
             logger.info(f"Mengumpulkan {len(collected_network_data)} event jaringan.")
+            logger.info(f"Terdeteksi {len(self.dynamic_js_executions)} pemanggilan fungsi JS dinamis.")
 
         except PlaywrightError as e:
             logger.error(f"Terjadi error Playwright: {e}", exc_info=True)
@@ -201,7 +289,6 @@ class BrowserAutomation:
             logger.error(f"Terjadi error tak terduga saat automasi browser: {e}", exc_info=True)
             screenshot_path = None 
         finally:
-            # Urutan penutupan yang lebih eksplisit
             if self.page:
                 try:
                     logger.debug("Menutup halaman...")
@@ -215,7 +302,7 @@ class BrowserAutomation:
             if self.context:
                 try:
                     logger.debug("Menutup konteks browser...")
-                    self.context.close() # Cookies akan hilang bersama konteks, jadi ambil sebelum ini
+                    self.context.close() 
                     logger.debug("Konteks browser berhasil ditutup.")
                 except PlaywrightError as e:
                     logger.warning(f"Error saat menutup konteks browser: {e}", exc_info=True)
@@ -241,5 +328,4 @@ class BrowserAutomation:
                     logger.warning(f"Error saat menghentikan Playwright context manager: {e}", exc_info=True)
             logger.debug("Keluar dari method analyze_page.")
 
-        # BARU: Kembalikan juga data cookies
-        return screenshot_path, collected_network_data, self.local_storage_data, self.session_storage_data, self.cookies_data
+        return screenshot_path, collected_network_data, self.local_storage_data, self.session_storage_data, self.cookies_data, self.dynamic_js_executions

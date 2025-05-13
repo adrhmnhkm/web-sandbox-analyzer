@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test Dynamic JS</title></head>
+<body>
+    <script>
+        console.log("Halaman uji JS Dinamis dimuat.");
+        eval("var testVarEval = 'Halo dari eval!'; console.log(testVarEval);");
+        setTimeout("console.log('Halo dari setTimeout string!')", 100);
+        var MyFunction = new Function("x", "y", "return x * y;");
+        console.log("Hasil dari new Function: " + MyFunction(6, 7));
+
+        // Contoh yang tidak akan dicatat oleh setTimeout/setInterval override kita (karena argumennya fungsi)
+        setTimeout(function() { console.log('setTimeout dengan fungsi, tidak dicatat sebagai string kode.'); }, 200);
+    </script>
+    <h1>Halaman Uji Eksekusi JS Dinamis</h1>
+</body>
+</html>

@@ -1,7 +1,7 @@
 # config.py
 
 # Pengaturan Browser
-HEADLESS_MODE = True  # True untuk berjalan tanpa GUI, False untuk menampilkan browser (berguna saat debugging)
+HEADLESS_MODE = False # True untuk berjalan tanpa GUI, False untuk menampilkan browser (berguna saat debugging)
 BROWSER_TYPE = "chromium"  # Pilihan: "chromium", "firefox", "webkit"
 DEFAULT_TIMEOUT = 60000  # Timeout dalam milidetik (misalnya, untuk navigasi halaman)
 

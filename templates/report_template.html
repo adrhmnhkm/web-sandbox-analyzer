@@ -29,9 +29,9 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px; /* Sedikit dikurangi paddingnya untuk tabel cookie */
+            padding: 8px; 
             text-align: left;
-            font-size: 0.85em; /* Sedikit dikurangi fontnya untuk tabel cookie */
+            font-size: 0.85em; 
         }
         th {
             background-color: #f0f0f0;
@@ -46,7 +46,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .url-cell, .value-cell, .ioc-url-cell, .cookie-value-cell { /* Menambahkan .cookie-value-cell */
+        .url-cell, .value-cell, .ioc-url-cell, .cookie-value-cell, .js-arg-cell { /* Menambahkan .js-arg-cell */
             word-break: break-all; 
         }
         .summary-item {
@@ -56,7 +56,7 @@
             overflow-x: auto;
             margin-top: 20px;
         }
-        .storage-section, .ioc-section, .cookie-section { /* Menambahkan .cookie-section */
+        .storage-section, .ioc-section, .cookie-section, .dynamic-js-section { /* Menambahkan .dynamic-js-section */
             margin-top: 30px;
         }
         .storage-table td:first-child { 
@@ -79,6 +79,7 @@
             overflow-x: auto;
             white-space: pre-wrap; /* Memastikan teks panjang di-wrap */
             word-wrap: break-word; /* Memastikan kata panjang di-wrap */
+            max-height: 200px; /* Batasi tinggi code-block */
         }
         .boolean-true { color: green; font-weight: bold;}
         .boolean-false { color: red; }
@@ -95,6 +96,7 @@
         <div class="summary-item"><strong>Total Item LocalStorage:</strong> {{ local_storage | length if local_storage and 'error' not in local_storage else 0 }}</div>
         <div class="summary-item"><strong>Total Item SessionStorage:</strong> {{ session_storage | length if session_storage and 'error' not in session_storage else 0 }}</div>
         <div class="summary-item"><strong>Total Cookie Terdeteksi:</strong> {{ cookies | length if cookies and not (cookies | length == 1 and 'error' in cookies[0]) else 0 }}</div>
+        <div class="summary-item"><strong>Total Panggilan JS Dinamis Terdeteksi:</strong> {{ dynamic_js_calls | length if dynamic_js_calls else 0 }}</div>
         {% if extracted_iocs %}
             <div class="summary-item"><strong>Total Domain Unik Terdeteksi:</strong> {{ extracted_iocs.unique_domains | length }}</div>
             <div class="summary-item"><strong>Total URL Berpotensi Berbahaya:</strong> {{ extracted_iocs.potentially_harmful_urls | length }}</div>
@@ -115,7 +117,6 @@
         {% if extracted_iocs and (extracted_iocs.unique_domains or extracted_iocs.potentially_harmful_urls or extracted_iocs.post_requests or extracted_iocs.direct_ip_requests) %}
         <div class="ioc-section">
             <h2>Indikator Kompromi (IOC) Terdeteksi</h2>
-
             {% if extracted_iocs.unique_domains %}
             <h3>Domain Unik yang Dihubungi ({{ extracted_iocs.unique_domains | length }})</h3>
             <ul class="ioc-list">
@@ -124,75 +125,40 @@
                 {% endfor %}
             </ul>
             {% endif %}
-
             {% if extracted_iocs.potentially_harmful_urls %}
             <h3>URL Berpotensi Berbahaya ({{ extracted_iocs.potentially_harmful_urls | length }})</h3>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Ekstensi</th>
-                            <th>Metode</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>URL</th><th>Ekstensi</th><th>Metode</th><th>Timestamp</th></tr></thead>
                     <tbody>
                         {% for item in extracted_iocs.potentially_harmful_urls %}
-                        <tr>
-                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
-                            <td>{{ item.extension }}</td>
-                            <td>{{ item.method }}</td>
-                            <td>{{ item.timestamp | round(2) }}</td>
-                        </tr>
+                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.extension }}</td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
             {% endif %}
-
             {% if extracted_iocs.post_requests %}
             <h3>Permintaan POST ({{ extracted_iocs.post_requests | length }})</h3>
              <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Timestamp</th>
-                            <th>Ringkasan Data POST</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>URL</th><th>Timestamp</th><th>Ringkasan Data POST</th></tr></thead>
                     <tbody>
                         {% for item in extracted_iocs.post_requests %}
-                        <tr>
-                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
-                            <td>{{ item.timestamp | round(2) }}</td>
-                            <td>{{ item.post_data_summary }}</td>
-                        </tr>
+                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.timestamp | unixtimestampformat }}</td><td>{{ item.post_data_summary }}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
             {% endif %}
-
             {% if extracted_iocs.direct_ip_requests %}
             <h3>Permintaan ke Alamat IP Langsung ({{ extracted_iocs.direct_ip_requests | length }})</h3>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>URL (Alamat IP)</th>
-                            <th>Metode</th>
-                            <th>Timestamp</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>URL (Alamat IP)</th><th>Metode</th><th>Timestamp</th></tr></thead>
                     <tbody>
                         {% for item in extracted_iocs.direct_ip_requests %}
-                        <tr>
-                            <td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td>
-                            <td>{{ item.method }}</td>
-                            <td>{{ item.timestamp | round(2) }}</td>
-                        </tr>
+                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -205,23 +171,13 @@
             <p>Tidak ada IOC spesifik yang terdeteksi berdasarkan kriteria saat ini.</p>
         </div>
         {% endif %}
+
         <div class="cookie-section">
             <h2>Cookies Terdeteksi ({{ cookies | length if cookies and not (cookies | length == 1 and 'error' in cookies[0]) else 0 }})</h2>
             {% if cookies and not (cookies | length == 1 and 'error' in cookies[0]) and cookies | length > 0 %}
                 <div class="table-responsive">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Nilai</th>
-                                <th>Domain</th>
-                                <th>Path</th>
-                                <th>Expires</th>
-                                <th>HttpOnly</th>
-                                <th>Secure</th>
-                                <th>SameSite</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Nama</th><th>Nilai</th><th>Domain</th><th>Path</th><th>Expires</th><th>HttpOnly</th><th>Secure</th><th>SameSite</th></tr></thead>
                         <tbody>
                             {% for cookie in cookies %}
                                 <tr>
@@ -245,23 +201,45 @@
             {% endif %}
         </div>
 
+        <div class="dynamic-js-section">
+            <h2>Log Eksekusi JavaScript Dinamis ({{ dynamic_js_calls | length if dynamic_js_calls else 0 }})</h2>
+            {% if dynamic_js_calls and dynamic_js_calls | length > 0 %}
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Fungsi Dipanggil</th>
+                                <th>Argumen (Kode yang Dieksekusi)</th>
+                                <th>URL Sumber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for call in dynamic_js_calls %}
+                                <tr>
+                                    <td>{{ call.timestamp | unixtimestampformat }}</td>
+                                    <td><strong>{{ call.function_name }}</strong></td>
+                                    <td class="js-arg-cell"><div class="code-block">{{ call.arguments }}</div></td>
+                                    <td class="url-cell"><a href="{{ call.source_url }}" target="_blank">{{ call.source_url }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>Tidak ada eksekusi JavaScript dinamis yang terdeteksi.</p>
+            {% endif %}
+        </div>
+
         <div class="storage-section">
             <h2>Data LocalStorage</h2>
             {% if local_storage and 'error' not in local_storage and local_storage | length > 0 %}
                 <div class="table-responsive">
                     <table class="storage-table">
-                        <thead>
-                            <tr>
-                                <th>Kunci (Key)</th>
-                                <th>Nilai (Value)</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Kunci (Key)</th><th>Nilai (Value)</th></tr></thead>
                         <tbody>
                             {% for key, value in local_storage.items() %}
-                                <tr>
-                                    <td>{{ key }}</td>
-                                    <td class="value-cell"><div class="code-block">{{ value }}</div></td>
-                                </tr>
+                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div></td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -278,18 +256,10 @@
             {% if session_storage and 'error' not in session_storage and session_storage | length > 0 %}
                 <div class="table-responsive">
                     <table class="storage-table">
-                        <thead>
-                            <tr>
-                                <th>Kunci (Key)</th>
-                                <th>Nilai (Value)</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Kunci (Key)</th><th>Nilai (Value)</th></tr></thead>
                         <tbody>
                             {% for key, value in session_storage.items() %}
-                                <tr>
-                                    <td>{{ key }}</td>
-                                    <td class="value-cell"><div class="code-block">{{ value }}</div></td>
-                                </tr>
+                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div></td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -305,24 +275,13 @@
         {% if network_events %}
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Timestamp</th>
-                            <th>Metode</th>
-                            <th>URL</th>
-                            <th>Status</th>
-                            <th>Tipe Sumber Daya</th>
-                            <th>Domain Tujuan</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>No.</th><th>Timestamp</th><th>Metode</th><th>URL</th><th>Status</th><th>Tipe Sumber Daya</th><th>Domain Tujuan</th></tr></thead>
                     <tbody>
                         {% for event in network_events %}
                             {% if event.type == 'request' %} 
                                 <tr>
                                     <td>{{ loop.index }}</td>
-                                    <td>{{ event.timestamp | round(2) }}</td>
-                                    <td>{{ event.method }}</td>
+                                    <td>{{ event.timestamp | unixtimestampformat }}</td> <td>{{ event.method }}</td>
                                     <td class="url-cell"><a href="{{ event.url }}" target="_blank" title="{{ event.url }}">{{ event.url[:100] }}{% if event.url|length > 100 %}...{% endif %}</a></td>
                                     <td>
                                         {% set response_for_request = network_events | selectattr('type', 'equalto', 'response') | selectattr('url', 'equalto', event.url) | first %}

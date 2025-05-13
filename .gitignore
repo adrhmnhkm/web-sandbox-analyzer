@@ -23,7 +23,7 @@ pip-selfcheck.json
 # Output files (jika Anda tidak ingin membagikan hasil analisis di repo)
 # Jika Anda INGIN membagikan contoh output, jangan tambahkan baris ini
 # atau gunakan path yang lebih spesifik jika hanya sebagian yang mau diabaikan.
-# output/
+output/
 
 # Log files
 *.log

@@ -150,8 +150,8 @@ def main():
     )
 
     analysis_timestamp_start = time.strftime("%Y-%m-%d %H:%M:%S")
-    # --- PERUBAHAN DI SINI: Menerima 5 nilai ---
-    screenshot_path, network_events, local_storage, session_storage, cookies = automation.analyze_page()
+    # --- PERUBAHAN DI SINI: Menerima 6 nilai ---
+    screenshot_path, network_events, local_storage, session_storage, cookies, dynamic_js_calls = automation.analyze_page()
     
     extracted_iocs = {} 
     if network_events:
@@ -164,7 +164,7 @@ def main():
 
     report_generator = HTMLReportGenerator() 
     
-    # --- PERUBAHAN DI SINI: Menambahkan data cookies ke laporan ---
+    # --- PERUBAHAN DI SINI: Menambahkan data dynamic_js_calls ke laporan ---
     analysis_data_for_report = {
         'target_url': target_url_to_analyze,
         'analysis_timestamp': analysis_timestamp_start,
@@ -173,7 +173,8 @@ def main():
         'local_storage': local_storage,        
         'session_storage': session_storage,
         'extracted_iocs': extracted_iocs,
-        'cookies': cookies # BARU
+        'cookies': cookies,
+        'dynamic_js_calls': dynamic_js_calls # BARU
     }
     html_report_path = report_generator.generate_report(analysis_data_for_report)
 
@@ -196,11 +197,16 @@ def main():
         logger.info(f"Data localStorage terdeteksi: {len(local_storage)} item.")
     if session_storage:
         logger.info(f"Data sessionStorage terdeteksi: {len(session_storage)} item.")
-    # BARU: Logging untuk data cookies
-    if cookies and not (len(cookies) == 1 and 'error' in cookies[0]): # Cek jika cookies bukan hanya berisi error
+    if cookies and not (len(cookies) == 1 and 'error' in cookies[0]):
         logger.info(f"Data cookies terdeteksi: {len(cookies)} cookie.")
-    elif cookies and 'error' in cookies[0]:
+    elif cookies and 'error' in cookies[0]: # Handle case where cookies might be an error list
         logger.warning(f"Gagal mengambil cookies: {cookies[0]['error']}")
+    
+    # BARU: Logging untuk eksekusi JS dinamis
+    if dynamic_js_calls: # Check if the list is not None and not empty
+        logger.info(f"Eksekusi JS Dinamis terdeteksi: {len(dynamic_js_calls)} panggilan.")
+    else: 
+        logger.info("Tidak ada eksekusi JS dinamis yang terdeteksi.")
 
 
     if html_report_path:

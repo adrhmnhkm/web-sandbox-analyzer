@@ -28,18 +28,17 @@ class HTMLReportGenerator:
             loader=FileSystemLoader(self.template_dir),
             autoescape=select_autoescape(['html', 'xml'])
         )
-        # Menambahkan filter kustom untuk mengubah timestamp Unix ke format yang dapat dibaca
         self.env.filters['unixtimestampformat'] = self.unixtimestampformat
         logger.debug(f"Jinja2 Environment initialized with template directory: {self.template_dir}")
 
     def unixtimestampformat(self, value, format="%Y-%m-%d %H:%M:%S"):
         """Filter Jinja2 untuk memformat timestamp Unix."""
-        if value is None or isinstance(value, (str)) or value == -1: # -1 sering digunakan Playwright untuk cookie sesi
+        if value is None or isinstance(value, (str)) or value == -1: 
             return "Sesi" if value == -1 else "Tidak Ditentukan"
         try:
             return time.strftime(format, time.localtime(value))
         except (TypeError, ValueError):
-            return value # Kembalikan nilai asli jika tidak bisa diformat
+            return value 
 
     def generate_report(self, analysis_data):
         """
@@ -79,6 +78,11 @@ class HTMLReportGenerator:
             else:
                 logger.warning(f"File screenshot asli tidak ditemukan di: {original_screenshot_path} atau path tidak valid.")
 
+            # --- PENAMBAHAN DEBUG LOG DI SINI ---
+            dynamic_js_calls_received = analysis_data.get('dynamic_js_calls', [])
+            logger.debug(f"Data 'dynamic_js_calls' yang diterima oleh report_generator: {dynamic_js_calls_received}")
+            # --- AKHIR PENAMBAHAN DEBUG LOG ---
+
             template_data = {
                 'target_url': target_url,
                 'analysis_timestamp': analysis_data.get('analysis_timestamp', time.strftime("%Y-%m-%d %H:%M:%S")),
@@ -88,7 +92,8 @@ class HTMLReportGenerator:
                 'local_storage': analysis_data.get('local_storage', {}),     
                 'session_storage': analysis_data.get('session_storage', {}),
                 'extracted_iocs': analysis_data.get('extracted_iocs', {}),
-                'cookies': analysis_data.get('cookies', []) # BARU: Ambil dari analysis_data
+                'cookies': analysis_data.get('cookies', []),
+                'dynamic_js_calls': dynamic_js_calls_received # Menggunakan variabel yang sudah di-debug
             }
 
             rendered_html = template.render(template_data)
@@ -110,14 +115,14 @@ class HTMLReportGenerator:
 if __name__ == '__main__':
     logger.info("Menjalankan report_generator.py secara langsung untuk pengujian DUMMY.")
     
-    dummy_target_url = "https://example-dummy-cookie.com"
+    dummy_target_url = "https://example-dummy-dynamicjs.com"
     dummy_timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
     
     dummy_screenshot_dir = os.path.join(project_root, config.SCREENSHOT_DIR)
     if not os.path.exists(dummy_screenshot_dir):
         os.makedirs(dummy_screenshot_dir)
     
-    dummy_screenshot_filename = f"example_dummy_cookie_com_{time.strftime('%Y%m%d-%H%M%S')}_capture.png"
+    dummy_screenshot_filename = f"example_dummy_dynamicjs_com_{time.strftime('%Y%m%d-%H%M%S')}_capture.png"
     dummy_screenshot_path = os.path.join(dummy_screenshot_dir, dummy_screenshot_filename)
     try:
         with open(dummy_screenshot_path, 'wb') as f: 
@@ -127,34 +132,17 @@ if __name__ == '__main__':
         logger.error(f"Tidak dapat membuat file screenshot dummy: {e}")
         dummy_screenshot_path = None
 
-    dummy_network_events = [
-        {"timestamp": time.time(), "type": "request", "method": "GET", "url": "https://example-dummy-cookie.com/", "resource_type": "document", "headers": {}},
-        {"timestamp": time.time(), "type": "response", "url": "https://example-dummy-cookie.com/", "status": 200, "status_text": "OK", "headers": {}},
-    ]
-    
-    dummy_local_storage = {"user_pref_local": "dark_theme"}
-    dummy_session_storage = {"temp_id_session": "xyz789"}
+    dummy_network_events = [] 
+    dummy_local_storage = {}
+    dummy_session_storage = {}
+    dummy_extracted_iocs = {}
+    dummy_cookies = []
 
-    dummy_extracted_iocs = {
-        "unique_domains": ["example-dummy-cookie.com"],
-        "potentially_harmful_urls": [],
-        "post_requests": [],
-        "direct_ip_requests": []
-    }
-
-    # BARU: Data dummy untuk cookies
-    dummy_cookies = [
-        {
-            "name": "session_id", "value": "abcdef123456", "domain": ".example-dummy-cookie.com", 
-            "path": "/", "expires": time.time() + 3600, "httpOnly": True, "secure": True, "sameSite": "Lax"
-        },
-        {
-            "name": "user_tracking", "value": "track_me_plz", "domain": "ads.example-dummy-cookie.com", 
-            "path": "/", "expires": -1, "httpOnly": False, "secure": False, "sameSite": "None"
-        },
-        {
-            "name": "error_cookie_example", "error": "Gagal mengambil detail cookie ini"
-        }
+    dummy_dynamic_js_calls = [
+        {"timestamp": time.time(), "function_name": "eval", "arguments": "alert('eval test 1');", "source_url": dummy_target_url},
+        {"timestamp": time.time(), "function_name": "setTimeout", "arguments": "console.log('timeout test')", "source_url": dummy_target_url},
+        {"timestamp": time.time(), "function_name": "Function", "arguments": "param1, param2, return param1 + param2;", "source_url": dummy_target_url},
+        {"timestamp": time.time(), "function_name": "eval", "arguments": "var x = 10; var y = 20; console.log(x+y);", "source_url": "http://some-other-script.js"},
     ]
 
     dummy_analysis_data = {
@@ -165,7 +153,8 @@ if __name__ == '__main__':
         'local_storage': dummy_local_storage,        
         'session_storage': dummy_session_storage,
         'extracted_iocs': dummy_extracted_iocs,
-        'cookies': dummy_cookies # BARU
+        'cookies': dummy_cookies,
+        'dynamic_js_calls': dummy_dynamic_js_calls 
     }
 
     generator = HTMLReportGenerator()
