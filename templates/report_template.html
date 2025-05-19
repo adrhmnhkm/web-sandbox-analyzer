@@ -17,15 +17,19 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1, h2, h3 { 
+        h1, h2, h3, h4 { 
             color: #333;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
+        h4 {
+            margin-top: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px; 
         }
         th, td {
             border: 1px solid #ddd;
@@ -35,54 +39,43 @@
         }
         th {
             background-color: #f0f0f0;
+            cursor: pointer; 
+            position: relative; 
         }
-        .screenshot-container {
-            margin-top: 20px;
-            text-align: center;
+        th::after { 
+            content: "\\2195"; 
+            font-size: 0.8em;
+            opacity: 0.4;
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
         }
-        .screenshot-container img {
-            max-width: 80%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .url-cell, .value-cell, .ioc-url-cell, .cookie-value-cell, .js-arg-cell { /* Menambahkan .js-arg-cell */
-            word-break: break-all; 
-        }
-        .summary-item {
-            margin-bottom: 10px;
-        }
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-        .storage-section, .ioc-section, .cookie-section, .dynamic-js-section { /* Menambahkan .dynamic-js-section */
+        th.sort-asc::after { content: "\\2191"; opacity: 1; }
+        th.sort-desc::after { content: "\\2193"; opacity: 1; }
+        .screenshot-container { margin-top: 20px; text-align: center; }
+        .screenshot-container img { max-width: 80%; height: auto; border: 1px solid #ddd; border-radius: 4px; }
+        .url-cell, .value-cell, .ioc-url-cell, .cookie-value-cell, .js-arg-cell { word-break: break-all; }
+        .summary-item { margin-bottom: 10px; }
+        .table-container { margin-top: 20px; }
+        .table-filter-input { width: 98%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .table-responsive { overflow-x: auto; }
+        .storage-section, .ioc-section, .cookie-section, .dynamic-js-section, .vt-section {
             margin-top: 30px;
         }
-        .storage-table td:first-child { 
-            font-weight: bold;
-            width: 30%; 
-        }
-        .ioc-list {
-            list-style-type: disc;
-            padding-left: 20px;
-        }
-        .ioc-list li {
-            margin-bottom: 5px;
-            word-break: break-all;
-        }
-        .code-block {
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-            white-space: pre-wrap; /* Memastikan teks panjang di-wrap */
-            word-wrap: break-word; /* Memastikan kata panjang di-wrap */
-            max-height: 200px; /* Batasi tinggi code-block */
-        }
+        .storage-table td:first-child { font-weight: bold; width: 30%; }
+        .ioc-list { list-style-type: disc; padding-left: 20px; }
+        .ioc-list li { margin-bottom: 5px; word-break: break-all; }
+        .code-block { background-color: #f8f8f8; border: 1px solid #ddd; padding: 10px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; max-height: 100px; transition: max-height 0.3s ease-out; }
+        .code-block.expanded { max-height: 1000px; }
+        .expand-toggle { cursor: pointer; color: #007bff; font-size: 0.8em; margin-left: 5px; text-decoration: underline; }
         .boolean-true { color: green; font-weight: bold;}
         .boolean-false { color: red; }
+        .vt-malicious { color: red; font-weight: bold; }
+        .vt-suspicious { color: orange; font-weight: bold; }
+        .vt-harmless { color: green; }
+        .vt-link a { color: #007bff; text-decoration: none; }
+        .vt-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -117,51 +110,80 @@
         {% if extracted_iocs and (extracted_iocs.unique_domains or extracted_iocs.potentially_harmful_urls or extracted_iocs.post_requests or extracted_iocs.direct_ip_requests) %}
         <div class="ioc-section">
             <h2>Indikator Kompromi (IOC) Terdeteksi</h2>
+            
             {% if extracted_iocs.unique_domains %}
             <h3>Domain Unik yang Dihubungi ({{ extracted_iocs.unique_domains | length }})</h3>
-            <ul class="ioc-list">
-                {% for domain in extracted_iocs.unique_domains %}
-                <li>{{ domain }}</li>
-                {% endfor %}
-            </ul>
+            <div class="table-container">
+                <input type="text" class="table-filter-input" data-target-list-id="uniqueDomainsList" placeholder="Filter domain...">
+                <ul class="ioc-list" id="uniqueDomainsList">
+                    {% for domain in extracted_iocs.unique_domains %}
+                    <li>
+                        {{ domain }}
+                        {% set vt_report_for_domain = virustotal_reports | selectattr('domain', 'equalto', domain) | first %}
+                        {% if vt_report_for_domain %}
+                            {% if 'error' in vt_report_for_domain %}
+                                <small style="color: #cc0000;"> (VT Error: {{ vt_report_for_domain.error }})</small>
+                            {% else %}
+                                <small>(VT: 
+                                <span class="vt-malicious">{{ vt_report_for_domain.malicious }}</span>M / 
+                                <span class="vt-suspicious">{{ vt_report_for_domain.suspicious }}</span>S / 
+                                <span class="vt-harmless">{{ vt_report_for_domain.harmless }}</span>H) 
+                                <span class="vt-link"><a href="{{ vt_report_for_domain.link_to_report }}" target="_blank">[Laporan VT]</a></span>
+                                </small>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endif %}
+
             {% if extracted_iocs.potentially_harmful_urls %}
             <h3>URL Berpotensi Berbahaya ({{ extracted_iocs.potentially_harmful_urls | length }})</h3>
-            <div class="table-responsive">
-                <table>
-                    <thead><tr><th>URL</th><th>Ekstensi</th><th>Metode</th><th>Timestamp</th></tr></thead>
-                    <tbody>
-                        {% for item in extracted_iocs.potentially_harmful_urls %}
-                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.extension }}</td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <input type="text" class="table-filter-input" data-target-table-id="harmfulUrlsTable" placeholder="Filter URL berbahaya...">
+                <div class="table-responsive">
+                    <table id="harmfulUrlsTable">
+                        <thead><tr><th data-sort-col="0">URL</th><th data-sort-col="1">Ekstensi</th><th data-sort-col="2">Metode</th><th data-sort-col="3" data-sort-type="date">Timestamp</th></tr></thead>
+                        <tbody>
+                            {% for item in extracted_iocs.potentially_harmful_urls %}
+                            <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.extension }}</td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {% endif %}
             {% if extracted_iocs.post_requests %}
             <h3>Permintaan POST ({{ extracted_iocs.post_requests | length }})</h3>
-             <div class="table-responsive">
-                <table>
-                    <thead><tr><th>URL</th><th>Timestamp</th><th>Ringkasan Data POST</th></tr></thead>
-                    <tbody>
-                        {% for item in extracted_iocs.post_requests %}
-                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.timestamp | unixtimestampformat }}</td><td>{{ item.post_data_summary }}</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <input type="text" class="table-filter-input" data-target-table-id="postRequestsTable" placeholder="Filter permintaan POST...">
+                <div class="table-responsive">
+                    <table id="postRequestsTable">
+                        <thead><tr><th data-sort-col="0">URL</th><th data-sort-col="1" data-sort-type="date">Timestamp</th><th data-sort-col="2">Ringkasan Data POST</th></tr></thead>
+                        <tbody>
+                            {% for item in extracted_iocs.post_requests %}
+                            <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.timestamp | unixtimestampformat }}</td><td>{{ item.post_data_summary }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {% endif %}
-            {% if extracted_iocs.direct_ip_requests %}
+             {% if extracted_iocs.direct_ip_requests %}
             <h3>Permintaan ke Alamat IP Langsung ({{ extracted_iocs.direct_ip_requests | length }})</h3>
-            <div class="table-responsive">
-                <table>
-                    <thead><tr><th>URL (Alamat IP)</th><th>Metode</th><th>Timestamp</th></tr></thead>
-                    <tbody>
-                        {% for item in extracted_iocs.direct_ip_requests %}
-                        <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <div class="table-container">
+                <input type="text" class="table-filter-input" data-target-table-id="directIpRequestsTable" placeholder="Filter permintaan IP...">
+                <div class="table-responsive">
+                    <table id="directIpRequestsTable">
+                        <thead><tr><th data-sort-col="0">URL (Alamat IP)</th><th data-sort-col="1">Metode</th><th data-sort-col="2" data-sort-type="date">Timestamp</th></tr></thead>
+                        <tbody>
+                            {% for item in extracted_iocs.direct_ip_requests %}
+                            <tr><td class="ioc-url-cell"><a href="{{ item.url }}" target="_blank">{{ item.url }}</a></td><td>{{ item.method }}</td><td>{{ item.timestamp | unixtimestampformat }}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {% endif %}
         </div>
@@ -175,113 +197,111 @@
         <div class="cookie-section">
             <h2>Cookies Terdeteksi ({{ cookies | length if cookies and not (cookies | length == 1 and 'error' in cookies[0]) else 0 }})</h2>
             {% if cookies and not (cookies | length == 1 and 'error' in cookies[0]) and cookies | length > 0 %}
+            <div class="table-container"> 
+                <input type="text" class="table-filter-input" data-target-table-id="cookiesTable" placeholder="Filter cookies...">
                 <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>Nama</th><th>Nilai</th><th>Domain</th><th>Path</th><th>Expires</th><th>HttpOnly</th><th>Secure</th><th>SameSite</th></tr></thead>
+                    <table id="cookiesTable">
+                        <thead><tr><th data-sort-col="0">Nama</th><th data-sort-col="1">Nilai</th><th data-sort-col="2">Domain</th><th data-sort-col="3">Path</th><th data-sort-col="4" data-sort-type="date">Expires</th><th data-sort-col="5">HttpOnly</th><th data-sort-col="6">Secure</th><th data-sort-col="7">SameSite</th></tr></thead>
                         <tbody>
                             {% for cookie in cookies %}
                                 <tr>
                                     <td>{{ cookie.name }}</td>
-                                    <td class="cookie-value-cell"><div class="code-block">{{ cookie.value }}</div></td>
-                                    <td>{{ cookie.domain }}</td>
-                                    <td>{{ cookie.path }}</td>
-                                    <td>{{ cookie.expires | unixtimestampformat }}</td>
+                                    <td class="cookie-value-cell"><div class="code-block">{{ cookie.value }}</div>{% if cookie.value and cookie.value | length > 100 %}<span class="expand-toggle" onclick="toggleExpand(this.previousElementSibling)">Lihat Semua</span>{% endif %}</td>
+                                    <td>{{ cookie.domain }}</td><td>{{ cookie.path }}</td><td>{{ cookie.expires | unixtimestampformat }}</td>
                                     <td><span class="boolean-{{ 'true' if cookie.httpOnly else 'false' }}">{{ cookie.httpOnly }}</span></td>
-                                    <td><span class="boolean-{{ 'true' if cookie.secure else 'false' }}">{{ cookie.secure }}</span></td>
-                                    <td>{{ cookie.sameSite }}</td>
+                                    <td><span class="boolean-{{ 'true' if cookie.secure else 'false' }}">{{ cookie.secure }}</span></td><td>{{ cookie.sameSite }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            {% elif cookies and cookies | length == 1 and 'error' in cookies[0] %}
-                <p>Gagal mengambil data cookies: {{ cookies[0].error }}</p>
-            {% else %}
-                <p>Tidak ada cookies yang ditemukan atau terdeteksi.</p>
+            </div>
+            {% elif cookies and cookies | length == 1 and 'error' in cookies[0] %} <p>Gagal mengambil data cookies: {{ cookies[0].error }}</p>
+            {% else %} <p>Tidak ada cookies yang ditemukan atau terdeteksi.</p>
             {% endif %}
         </div>
 
         <div class="dynamic-js-section">
             <h2>Log Eksekusi JavaScript Dinamis ({{ dynamic_js_calls | length if dynamic_js_calls else 0 }})</h2>
             {% if dynamic_js_calls and dynamic_js_calls | length > 0 %}
+            <div class="table-container"> 
+                <input type="text" class="table-filter-input" data-target-table-id="dynamicJsCallsTable" placeholder="Filter log JS dinamis...">
                 <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Fungsi Dipanggil</th>
-                                <th>Argumen (Kode yang Dieksekusi)</th>
-                                <th>URL Sumber</th>
-                            </tr>
-                        </thead>
+                    <table id="dynamicJsCallsTable">
+                        <thead><tr><th data-sort-col="0" data-sort-type="date">Timestamp</th><th data-sort-col="1">Fungsi Dipanggil</th><th data-sort-col="2">Argumen (Kode yang Dieksekusi)</th><th data-sort-col="3">URL Sumber</th></tr></thead>
                         <tbody>
                             {% for call in dynamic_js_calls %}
                                 <tr>
-                                    <td>{{ call.timestamp | unixtimestampformat }}</td>
-                                    <td><strong>{{ call.function_name }}</strong></td>
-                                    <td class="js-arg-cell"><div class="code-block">{{ call.arguments }}</div></td>
+                                    <td>{{ call.timestamp | unixtimestampformat }}</td><td><strong>{{ call.function_name }}</strong></td>
+                                    <td class="js-arg-cell"><div class="code-block">{{ call.arguments }}</div>{% if call.arguments and call.arguments | length > 100 %}<span class="expand-toggle" onclick="toggleExpand(this.previousElementSibling)">Lihat Semua</span>{% endif %}</td>
                                     <td class="url-cell"><a href="{{ call.source_url }}" target="_blank">{{ call.source_url }}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            {% else %}
-                <p>Tidak ada eksekusi JavaScript dinamis yang terdeteksi.</p>
+            </div>
+            {% else %} <p>Tidak ada eksekusi JavaScript dinamis yang terdeteksi.</p>
             {% endif %}
         </div>
+
 
         <div class="storage-section">
             <h2>Data LocalStorage</h2>
             {% if local_storage and 'error' not in local_storage and local_storage | length > 0 %}
+            <div class="table-container"> 
+                <input type="text" class="table-filter-input" data-target-table-id="localStorageTable" placeholder="Filter localStorage...">
                 <div class="table-responsive">
-                    <table class="storage-table">
-                        <thead><tr><th>Kunci (Key)</th><th>Nilai (Value)</th></tr></thead>
+                    <table class="storage-table" id="localStorageTable">
+                        <thead><tr><th data-sort-col="0">Kunci (Key)</th><th data-sort-col="1">Nilai (Value)</th></tr></thead>
                         <tbody>
                             {% for key, value in local_storage.items() %}
-                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div></td></tr>
+                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div>{% if value and value | length > 100 %}<span class="expand-toggle" onclick="toggleExpand(this.previousElementSibling)">Lihat Semua</span>{% endif %}</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            {% elif local_storage and 'error' in local_storage %}
-                <p>Gagal mengambil data localStorage: {{ local_storage.error }}</p>
-            {% else %}
-                <p>Tidak ada data yang ditemukan di localStorage.</p>
+            </div>
+            {% elif local_storage and 'error' in local_storage %} <p>Gagal mengambil data localStorage: {{ local_storage.error }}</p>
+            {% else %} <p>Tidak ada data yang ditemukan di localStorage.</p>
             {% endif %}
         </div>
 
         <div class="storage-section">
             <h2>Data SessionStorage</h2>
             {% if session_storage and 'error' not in session_storage and session_storage | length > 0 %}
+            <div class="table-container">
+                <input type="text" class="table-filter-input" data-target-table-id="sessionStorageTable" placeholder="Filter sessionStorage...">
                 <div class="table-responsive">
-                    <table class="storage-table">
-                        <thead><tr><th>Kunci (Key)</th><th>Nilai (Value)</th></tr></thead>
+                    <table class="storage-table" id="sessionStorageTable">
+                        <thead><tr><th data-sort-col="0">Kunci (Key)</th><th data-sort-col="1">Nilai (Value)</th></tr></thead>
                         <tbody>
                             {% for key, value in session_storage.items() %}
-                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div></td></tr>
+                                <tr><td>{{ key }}</td><td class="value-cell"><div class="code-block">{{ value }}</div>{% if value and value | length > 100 %}<span class="expand-toggle" onclick="toggleExpand(this.previousElementSibling)">Lihat Semua</span>{% endif %}</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            {% elif session_storage and 'error' in session_storage %}
-                 <p>Gagal mengambil data sessionStorage: {{ session_storage.error }}</p>
-            {% else %}
-                <p>Tidak ada data yang ditemukan di sessionStorage.</p>
+            </div>
+            {% elif session_storage and 'error' in session_storage %} <p>Gagal mengambil data sessionStorage: {{ session_storage.error }}</p>
+            {% else %} <p>Tidak ada data yang ditemukan di sessionStorage.</p>
             {% endif %}
         </div>
 
         <h2>Detail Aktivitas Jaringan ({{ network_events | selectattr('type', 'equalto', 'request') | list | length }} Permintaan)</h2>
         {% if network_events %}
+        <div class="table-container"> 
+            <input type="text" class="table-filter-input" data-target-table-id="networkEventsTable" placeholder="Filter aktivitas jaringan...">
             <div class="table-responsive">
-                <table>
-                    <thead><tr><th>No.</th><th>Timestamp</th><th>Metode</th><th>URL</th><th>Status</th><th>Tipe Sumber Daya</th><th>Domain Tujuan</th></tr></thead>
+                <table id="networkEventsTable">
+                    <thead><tr><th data-sort-col="0" data-sort-type="number">No.</th><th data-sort-col="1" data-sort-type="date">Timestamp</th><th data-sort-col="2">Metode</th><th data-sort-col="3">URL</th><th data-sort-col="4" data-sort-type="number">Status</th><th data-sort-col="5">Tipe Sumber Daya</th><th data-sort-col="6">Domain Tujuan</th></tr></thead>
                     <tbody>
+                        {% set request_index = namespace(value=0) %}
                         {% for event in network_events %}
                             {% if event.type == 'request' %} 
+                                {% set request_index.value = request_index.value + 1 %}
                                 <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>{{ event.timestamp | unixtimestampformat }}</td> <td>{{ event.method }}</td>
+                                    <td>{{ request_index.value }}</td><td>{{ event.timestamp | unixtimestampformat }}</td><td>{{ event.method }}</td>
                                     <td class="url-cell"><a href="{{ event.url }}" target="_blank" title="{{ event.url }}">{{ event.url[:100] }}{% if event.url|length > 100 %}...{% endif %}</a></td>
                                     <td>
                                         {% set response_for_request = network_events | selectattr('type', 'equalto', 'response') | selectattr('url', 'equalto', event.url) | first %}
@@ -298,9 +318,124 @@
                     </tbody>
                 </table>
             </div>
-        {% else %}
-            <p>Tidak ada aktivitas jaringan yang tercatat.</p>
+        </div>
+        {% else %} <p>Tidak ada aktivitas jaringan yang tercatat.</p>
         {% endif %}
     </div>
+
+    <script>
+        // Fungsi untuk membuat tabel bisa diurutkan
+        function makeTableSortable(tableId) {
+            const table = document.getElementById(tableId);
+            if (!table) return;
+            const headers = table.querySelectorAll('thead th');
+            const tbody = table.querySelector('tbody');
+            let currentSortDirections = {}; 
+            headers.forEach((header, colIndex) => {
+                if (header.hasAttribute('data-sort-col')) {
+                    if(currentSortDirections[colIndex] === undefined) {
+                        currentSortDirections[colIndex] = true; 
+                    }
+                    header.addEventListener('click', () => {
+                        const sortType = header.getAttribute('data-sort-type') || 'string';
+                        currentSortDirections[colIndex] = !currentSortDirections[colIndex];
+                        const isAscending = currentSortDirections[colIndex];
+                        headers.forEach((th, idx) => {
+                            th.classList.remove('sort-asc', 'sort-desc');
+                            if (idx === colIndex) {
+                                th.classList.toggle('sort-asc', isAscending);
+                                th.classList.toggle('sort-desc', !isAscending);
+                            }
+                        });
+                        const rowsArray = Array.from(tbody.querySelectorAll('tr'));
+                        rowsArray.sort((a, b) => {
+                            const cellA_text = a.querySelectorAll('td')[colIndex].innerText.toLowerCase();
+                            const cellB_text = b.querySelectorAll('td')[colIndex].innerText.toLowerCase();
+                            let valA = cellA_text;
+                            let valB = cellB_text;
+                            if (sortType === 'number') {
+                                valA = parseFloat(cellA_text.replace(/[^0-9.-]+/g,""));
+                                valB = parseFloat(cellB_text.replace(/[^0-9.-]+/g,""));
+                                if (isNaN(valA)) valA = isAscending ? Infinity : -Infinity;
+                                if (isNaN(valB)) valB = isAscending ? Infinity : -Infinity;
+                            } else if (sortType === 'date') {
+                                const parseDate = (str) => {
+                                    if (str === 'sesi' || str === 'tidak ditentukan') return isAscending ? new Date(0) : new Date(8640000000000000);
+                                    const parts = str.match(/(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})/);
+                                    if (parts) { return new Date(parts[1], parts[2] - 1, parts[3], parts[4], parts[5], parts[6]); }
+                                    return isAscending ? new Date(0) : new Date(8640000000000000);
+                                };
+                                valA = parseDate(cellA_text);
+                                valB = parseDate(cellB_text);
+                            }
+                            if (valA < valB) return isAscending ? -1 : 1;
+                            if (valA > valB) return isAscending ? 1 : -1;
+                            return 0;
+                        });
+                        rowsArray.forEach(row => tbody.appendChild(row));
+                    });
+                }
+            });
+        }
+        // Fungsi untuk memfilter tabel atau list
+        function addTableFiltering() {
+            const filterInputs = document.querySelectorAll('.table-filter-input');
+            filterInputs.forEach(input => {
+                input.addEventListener('keyup', function() {
+                    const filterValue = this.value.toLowerCase();
+                    const targetTableId = this.getAttribute('data-target-table-id');
+                    const targetListId = this.getAttribute('data-target-list-id');
+                    if (targetTableId) {
+                        const table = document.getElementById(targetTableId);
+                        if (table) {
+                            const rows = table.querySelectorAll('tbody tr');
+                            rows.forEach(row => {
+                                const cells = row.querySelectorAll('td');
+                                let match = false;
+                                cells.forEach(cell => {
+                                    if (cell.innerText.toLowerCase().includes(filterValue)) {
+                                        match = true;
+                                    }
+                                });
+                                row.style.display = match ? '' : 'none';
+                            });
+                        }
+                    } else if (targetListId) {
+                        const list = document.getElementById(targetListId);
+                        if (list) {
+                            const items = list.querySelectorAll('li');
+                            items.forEach(item => {
+                                item.style.display = item.innerText.toLowerCase().includes(filterValue) ? '' : 'none';
+                            });
+                        }
+                    }
+                });
+            });
+        }
+        // Fungsi untuk toggle expand/collapse pada code-block
+        function toggleExpand(element) {
+            if (!element || !element.classList.contains('code-block')) return;
+            element.classList.toggle('expanded');
+            const toggleButton = element.nextElementSibling; 
+            if (toggleButton && toggleButton.classList.contains('expand-toggle')) {
+                if (element.classList.contains('expanded')) {
+                    toggleButton.textContent = 'Sembunyikan';
+                } else {
+                    toggleButton.textContent = 'Lihat Semua';
+                }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            makeTableSortable('harmfulUrlsTable');
+            makeTableSortable('postRequestsTable');
+            makeTableSortable('directIpRequestsTable');
+            makeTableSortable('cookiesTable');
+            makeTableSortable('dynamicJsCallsTable');
+            makeTableSortable('localStorageTable');
+            makeTableSortable('sessionStorageTable');
+            makeTableSortable('networkEventsTable');
+            addTableFiltering();
+        });
+    </script>
 </body>
 </html>

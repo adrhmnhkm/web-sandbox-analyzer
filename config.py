@@ -14,6 +14,10 @@ DEFAULT_SCREENSHOT_FILENAME = "capture.png"
 DEFAULT_NETWORK_LOG_FILENAME = "network_activity.json"
 DEFAULT_HTML_REPORT_FILENAME = "analysis_report.html" # BARIS BARU
 
+# Setting API Virustotal
+VIRUSTOTAL_API_KEY = ""
+THREAT_INTEL_ENABLED = True # Set ke False untuk menonaktifkan pemeriksaan ke VirusTotal
+VIRUSTOTAL_REQUEST_DELAY = 16 # Detik, untuk mematuhi batasan API key gratis (4 permintaan/menit)
 
 # Pengaturan Logging
 LOG_LEVEL = "INFO"  # Pilihan: "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"
