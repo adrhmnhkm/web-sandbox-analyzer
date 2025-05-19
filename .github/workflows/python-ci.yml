@@ -31,10 +31,12 @@ jobs:
     - name: Install system dependencies for Playwright
       run: |
         # Perintah ini akan menginstal dependensi sistem yang dibutuhkan oleh browser Playwright
-        # Ini penting agar `playwright install` bisa berjalan dengan benar di runner Ubuntu.
-        # Opsi --with-deps pada playwright install juga membantu, tapi ini lebih eksplisit.
+        # libasound2 dihapus karena menyebabkan error "no installation candidate"
+        # Kita akan mengandalkan `playwright install --with-deps` untuk dependensi audio jika diperlukan.
         sudo apt-get update
-        sudo apt-get install -y libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgbm1 libasound2 libxkbcommon0 libxrandr2 libpangocairo-1.0-0 libxshmfence1 libglib2.0-0
+        sudo apt-get install -y libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libgbm1 libxkbcommon0 libxrandr2 libpangocairo-1.0-0 libxshmfence1 libglib2.0-0
+        # Paket yang mungkin juga berguna dan umumnya aman untuk disertakan:
+        # sudo apt-get install -y --no-install-recommends libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxtst6 fonts-liberation
 
     - name: Install Python dependencies
       run: |
@@ -45,7 +47,7 @@ jobs:
       run: |
         # Instal browser yang dibutuhkan. 
         # Menginstal hanya chromium akan lebih cepat jika itu yang utama digunakan.
-        # Jika Anda menguji dengan browser lain, pastikan mereka juga diinstal.
+        # Opsi --with-deps akan mencoba menginstal dependensi sistem browser.
         playwright install chromium --with-deps 
         # playwright install firefox --with-deps # Aktifkan jika perlu
         # playwright install webkit --with-deps # Aktifkan jika perlu
@@ -53,26 +55,20 @@ jobs:
 
     - name: Run tests with pytest
       run: |
-        # Jalankan semua tes (unit dan integrasi)
-        # --cov=. akan mengukur cakupan untuk direktori saat ini
-        # --cov-report=xml akan menghasilkan laporan cakupan dalam format XML (untuk Codecov/Coveralls)
-        # --cov-report=html akan menghasilkan laporan cakupan dalam format HTML
         pytest --cov=. --cov-report=xml --cov-report=html
 
     - name: Upload HTML coverage report as artifact
-      # Menyimpan laporan cakupan HTML sebagai artefak yang bisa diunduh
       uses: actions/upload-artifact@v4
-      if: always() # Selalu jalankan langkah ini, bahkan jika tes gagal, agar bisa melihat laporan
+      if: always() 
       with:
         name: coverage-report-py${{ matrix.python-version }}
-        path: htmlcov/ # Direktori tempat laporan cakupan HTML disimpan oleh pytest-cov
-      continue-on-error: true # Biarkan workflow lanjut meskipun upload gagal
+        path: htmlcov/ 
+      continue-on-error: true 
 
     # - name: Upload coverage reports to Codecov - Opsional
-    #   # Jika Anda menggunakan Codecov.io untuk melacak cakupan tes
     #   uses: codecov/codecov-action@v4
     #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }} # Simpan token Codecov Anda sebagai secret di GitHub
-    #     files: ./coverage.xml # Path ke file laporan cakupan XML
-    #     fail_ci_if_error: true # Gagal CI jika upload ke Codecov error
+    #     token: ${{ secrets.CODECOV_TOKEN }} 
+    #     files: ./coverage.xml 
+    #     fail_ci_if_error: true 
     #   continue-on-error: true
