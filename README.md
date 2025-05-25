@@ -120,15 +120,6 @@ Berikut adalah beberapa rencana pengembangan di masa depan:
 
 Lihat [open issues](https://github.com/NAMA_PENGGUNA_ANDA/NAMA_REPOSITORI_ANDA/issues) untuk daftar lengkap fitur yang diusulkan (dan bug yang diketahui).
 
-## 🤝 Berkontribusi
-
-Kontribusi sangat kami hargai! Jika Anda ingin berkontribusi pada proyek ini, silakan lihat panduan di `CONTRIBUTING.md` (Anda perlu membuat file ini).
-
-Beberapa cara Anda bisa berkontribusi:
-* Melaporkan bug.
-* Mengusulkan fitur baru.
-* Menulis atau memperbaiki dokumentasi.
-* Mengirimkan *pull request* dengan perbaikan atau fitur baru.
 
 ## 📜 Lisensi
 
